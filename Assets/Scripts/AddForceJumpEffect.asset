@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed30c3d5e590b948ae0ec93a95c4477, type: 3}
   m_Name: AddForceJumpEffect
   m_EditorClassIdentifier: 
-  maxJumpForce: 10
-  pressTimeForMaxForce: 0.5
+  maxJumpForce: 20
+  pressTimeForMaxForce: 0.3
