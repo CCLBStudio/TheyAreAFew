@@ -684,6 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69a744fe9a774654daaf5aa92e4c9721, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grounded: 0
   gravityScale: 1
 --- !u!114 &1085049609
 MonoBehaviour:
@@ -700,6 +701,8 @@ MonoBehaviour:
   rb: {fileID: 1085049603}
   maxJumpForce: 10
   pressTimeForMaxForce: 1
+  jumpEffects:
+  - {fileID: 11400000, guid: 3cc8098650378ac4caf8c5d0072d7426, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
