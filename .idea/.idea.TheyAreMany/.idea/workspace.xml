@@ -40,9 +40,9 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "C:\\Users\\aymer\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\aymer\\AppData\\Roaming\\JetBrains\\Rider2023.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\aymer\\AppData\\Local\\Symbols\\src"
+      "C:\\Users\\The King\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\The King\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\The King\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
@@ -95,6 +95,7 @@
       <workItem from="1729269802736" duration="34000" />
       <workItem from="1729415324504" duration="1871000" />
       <workItem from="1729510170176" duration="1691000" />
+      <workItem from="1729529672904" duration="180000" />
     </task>
     <servers />
   </component>

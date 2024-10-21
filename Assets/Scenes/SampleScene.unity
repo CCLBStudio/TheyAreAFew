@@ -699,10 +699,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 1085049603}
-  maxJumpForce: 10
-  pressTimeForMaxForce: 1
   jumpEffects:
   - {fileID: 11400000, guid: 3cc8098650378ac4caf8c5d0072d7426, type: 2}
+  - {fileID: 11400000, guid: 8ab392d1149aa4a45954e09d9bec04f2, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
