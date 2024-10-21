@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class AdditionalPhysics : MonoBehaviour
 {
-    public bool grounded;
     public float gravityScale = 1f;
 
     private Rigidbody _rb;

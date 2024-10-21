@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ccba5ae2307a84e9c81eca35af4e47, type: 3}
   m_Name: AddTorqueJumpEffect
   m_EditorClassIdentifier: 
-  torqueStrength: 75
+  torqueStrength: 15
+  angularDragDuringJump: 2
