@@ -7,10 +7,7 @@ public class PlayerJump : MonoBehaviour
 
     [SerializeField] private List<JumpEffect> jumpEffects;
 
-    private bool _isPressing;
-    private float _normalizedPressTime;
-
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -26,6 +23,14 @@ public class PlayerJump : MonoBehaviour
             {
                 effect.Jump(this);
             }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        foreach (var effect in jumpEffects)
+        {
+            effect.OnFixedUpdate(this);
         }
     }
 }

@@ -8,36 +8,37 @@ public class AddForceJumpEffect : JumpEffect
     [SerializeField] private float pressTimeForMaxForce = 1f;
 
     private float _startChargingTime;
+    private bool _jumpInputReleased;
+    private float _normalizedJumpForce;
     
     public override void ChargingJump(PlayerJump jumper)
     {
-        Debug.Log("Charging jump !");
         _startChargingTime = Time.time;
+        _jumpInputReleased = false;
     }
 
     public override void Jump(PlayerJump jumper)
     {
-        Debug.Log("Jump !");
-
         float time = Time.time;
         float deltaTime = time - _startChargingTime;
-        float normalized = Mathf.Clamp(deltaTime / pressTimeForMaxForce, 0f, 1f);
-        jumper.rb.AddForce(Vector3.up * (maxJumpForce * normalized), ForceMode.Impulse);
-    }
-
-    public override void MovingUpwards(PlayerJump jumper)
-    {
+        _normalizedJumpForce = Mathf.Clamp(deltaTime / pressTimeForMaxForce, 0f, 1f);
+        _jumpInputReleased = true;
     }
 
     public override void ApexReached(PlayerJump jumper)
     {
     }
 
-    public override void MovingDownwards(PlayerJump jumper)
-    {
-    }
-
     public override void Landed(PlayerJump jumper)
     {
+    }
+    
+    public override void OnFixedUpdate(PlayerJump jumper)
+    {
+        if (_jumpInputReleased)
+        {
+            _jumpInputReleased = false;
+            jumper.rb.AddForce(Vector3.up * (maxJumpForce * _normalizedJumpForce), ForceMode.Impulse);
+        }
     }
 }
