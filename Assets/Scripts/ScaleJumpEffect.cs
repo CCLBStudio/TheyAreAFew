@@ -1,4 +1,4 @@
-using DG.Tweening;
+using PrimeTween;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "They Are Many/Player/Jump/Effects/Scale Jump Effect", fileName = "NewScale JumpEffect")]
@@ -16,13 +16,17 @@ public class ScaleJumpEffect : JumpEffect
 
     public override void ChargingJump(PlayerJump jumper)
     {
-        _currentTween = jumper.scaleTransform.DOScaleY(minScaleSize, chargingTime).SetEase(Ease.Linear)
+        _currentTween = Tween.Scale(jumper.scaleTransform, new Vector3(1f / minScaleSize / 2f, minScaleSize, 1f / minScaleSize / 2f), chargingTime, Ease.OutQuad);
     }
 
     public override void Jump(PlayerJump jumper)
     {
-        _currentTween.Kill();
-        _currentTween = jumper.scaleTransform.DOScaleY(1f, resetTime).SetEase(Ease.OutBack);
+        if (_currentTween.isAlive)
+        {
+            _currentTween.Stop();
+        }
+
+        _currentTween = Tween.Scale(jumper.scaleTransform, Vector3.one, resetTime, Ease.OutBack);
     }
 
     public override void Landed(PlayerJump jumper)

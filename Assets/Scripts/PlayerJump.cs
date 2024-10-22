@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class PlayerJump : MonoBehaviour
 {
-    public Rigidbody rb;
+    public bool IsJumping => _isJumping;
+    
+    public Rigidbody movementRb;
     public Transform scaleTransform;
+    public Transform rotationTransform;
 
     [SerializeField] private List<JumpEffect> jumpEffects;
 
@@ -17,7 +20,7 @@ public class PlayerJump : MonoBehaviour
 
     private void Start()
     {
-        _previousVelocity = rb.linearVelocity;
+        _previousVelocity = movementRb.linearVelocity;
         _isChargingJump = false;
         _isJumping = false;
         _grounded = false;
@@ -57,7 +60,7 @@ public class PlayerJump : MonoBehaviour
             effect.OnFixedUpdate(this);
         }
 
-        Vector3 dir = (rb.linearVelocity - _previousVelocity).normalized;
+        Vector3 dir = (movementRb.linearVelocity - _previousVelocity).normalized;
         if(dir.y < 0f && _isJumping && !_reachedApex)
         {
             _reachedApex = true;
@@ -67,7 +70,7 @@ public class PlayerJump : MonoBehaviour
             }
         }
 
-        _previousVelocity = rb.linearVelocity;
+        _previousVelocity = movementRb.linearVelocity;
     }
 
     private void OnCollisionEnter(Collision collision)

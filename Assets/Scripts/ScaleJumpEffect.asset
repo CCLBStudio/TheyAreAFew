@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ced3b121e550d4da5e68b8da589510, type: 3}
   m_Name: ScaleJumpEffect
   m_EditorClassIdentifier: 
-  chargingTime: 0.3
-  resetTime: 0.3
-  minScaleSize: 0.25
+  chargingTime: 0.4
+  resetTime: 0.4
+  minScaleSize: 0.35

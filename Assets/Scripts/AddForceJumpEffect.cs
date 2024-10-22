@@ -38,7 +38,7 @@ public class AddForceJumpEffect : JumpEffect
         if (_jumpInputReleased)
         {
             _jumpInputReleased = false;
-            jumper.rb.AddForce(Vector3.up * (maxJumpForce * _normalizedJumpForce), ForceMode.Impulse);
+            jumper.movementRb.AddForce(Vector3.up * (maxJumpForce * _normalizedJumpForce), ForceMode.Impulse);
         }
     }
 }

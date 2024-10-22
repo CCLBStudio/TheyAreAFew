@@ -37,11 +37,11 @@ public class AdditionalGravityJumpEffect : JumpEffect
     {
         if(_goingUpward)
         {
-            jumper.rb.AddForce(Physics.gravity * ((upwardGravityScale - 1f)));
+            jumper.movementRb.AddForce(Physics.gravity * ((upwardGravityScale - 1f)));
         }
         else if(_goingDownard)
         {
-            jumper.rb.AddForce(Physics.gravity * ((downwardGravityScale - 1f)));
+            jumper.movementRb.AddForce(Physics.gravity * ((downwardGravityScale - 1f)));
         }
     }
 }
