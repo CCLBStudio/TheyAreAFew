@@ -1,3 +1,4 @@
+using ReaaliStudio.Systems.ScriptableValue;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,12 +10,16 @@ public class PlayerJump : MonoBehaviour
     public Transform scaleTransform;
     public Transform rotationTransform;
 
+    [SerializeField] private FloatValue normalizedJumpStrength;
+    [SerializeField] private FloatValue pressTimeForMaxJump;
     [SerializeField] private List<JumpEffect> jumpEffects;
 
     private bool _isJumping;
     private bool _isChargingJump;
     private bool _reachedApex;
     private bool _grounded;
+
+    private float _pressingTime;
 
     private Vector3 _previousVelocity;
 
@@ -33,6 +38,9 @@ public class PlayerJump : MonoBehaviour
         {
             _isChargingJump = true;
             _reachedApex = false;
+            normalizedJumpStrength.Value = 0f;
+            _pressingTime = Time.time;
+            _previousVelocity = Vector3.zero;
 
             foreach (var effect in jumpEffects)
             {
@@ -45,6 +53,7 @@ public class PlayerJump : MonoBehaviour
             _isChargingJump = false;
             _isJumping = true;
             _reachedApex = false;
+            normalizedJumpStrength.Value = Mathf.Clamp01((Time.time - _pressingTime) / pressTimeForMaxJump.Value);
 
             foreach (var effect in jumpEffects)
             {
@@ -60,17 +69,21 @@ public class PlayerJump : MonoBehaviour
             effect.OnFixedUpdate(this);
         }
 
-        Vector3 dir = (movementRb.linearVelocity - _previousVelocity).normalized;
-        if(dir.y < 0f && _isJumping && !_reachedApex)
+        if(IsJumping)
         {
-            _reachedApex = true;
-            foreach (var effect in jumpEffects)
-            {
-                effect.ApexReached(this);
-            }
-        }
+            Vector3 dir = (movementRb.position - _previousVelocity);
 
-        _previousVelocity = movementRb.linearVelocity;
+            if (dir.y < 0f && !_reachedApex)
+            {
+                _reachedApex = true;
+                foreach (var effect in jumpEffects)
+                {
+                    effect.ApexReached(this);
+                }
+            }
+
+            _previousVelocity = movementRb.position;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)

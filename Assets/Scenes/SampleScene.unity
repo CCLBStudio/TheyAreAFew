@@ -642,6 +642,10 @@ MonoBehaviour:
   movementRb: {fileID: 1085049603}
   scaleTransform: {fileID: 1521182828}
   rotationTransform: {fileID: 339429003}
+  normalizedJumpStrength: {fileID: 11400000, guid: 2ee73b39d6524a940aaacb1b816a6a86,
+    type: 2}
+  pressTimeForMaxJump: {fileID: 11400000, guid: 7f0d98a8873c61c47addb3e832ee7c9e,
+    type: 2}
   jumpEffects:
   - {fileID: 11400000, guid: 3cc8098650378ac4caf8c5d0072d7426, type: 2}
   - {fileID: 11400000, guid: 9ef57c8bb97eb864087b45d17656c182, type: 2}

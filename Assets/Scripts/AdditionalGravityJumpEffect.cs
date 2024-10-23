@@ -30,7 +30,7 @@ public class AdditionalGravityJumpEffect : JumpEffect
     public override void Landed(PlayerJump jumper)
     {
         _goingDownard = false;
-        _goingUpward = true;
+        _goingUpward = false;
     }
 
     public override void OnFixedUpdate(PlayerJump jumper)

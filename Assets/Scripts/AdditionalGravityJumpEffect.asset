@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba5623665fd51304d9f59676d5b4703e, type: 3}
   m_Name: AdditionalGravityJumpEffect
   m_EditorClassIdentifier: 
-  upwardGravityScale: 25
+  upwardGravityScale: 15
   downwardGravityScale: 4

@@ -13,24 +13,21 @@ namespace ReaaliStudio.Systems.ScriptableValue
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             var properties = Initialize(property);
-            
-            float labelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = Mathf.Min(200f, labelWidth);
+
             var value = (BaseScriptableValue)property.objectReferenceValue;
             float availableWidth = position.width;
-            
-            float width = Mathf.Min(500f, availableWidth - 120f);
+
+            float width = availableWidth - 220f;
             position.width = width;
             properties.secondaryRect.x = position.x + position.width + 20;
             properties.secondaryRect.y = position.y;
             properties.secondaryRect.height = position.height;
             
             EditorGUI.PropertyField(position, property, label);
-            EditorGUIUtility.labelWidth = labelWidth;
 
             if (!value)
             {
-                properties.secondaryRect.width = Mathf.Min(100f, availableWidth - position.width - 20f);
+                properties.secondaryRect.width = 200f;
 
                 if (GUI.Button(properties.secondaryRect, "Create New"))
                 {
@@ -47,7 +44,7 @@ namespace ReaaliStudio.Systems.ScriptableValue
                     return;
                 }
                 
-                properties.secondaryRect.width = Mathf.Max(0f, availableWidth - position.width - 20f);
+                properties.secondaryRect.width = 200f;
                 properties.valueSerializedObject ??= new SerializedObject(property.objectReferenceValue);
                 SerializedProperty valueProperty = properties.valueSerializedObject.FindProperty(ScriptableValue<dynamic>.ValueProperty);
                 EditorGUI.PropertyField(properties.secondaryRect, valueProperty, new GUIContent(""));
