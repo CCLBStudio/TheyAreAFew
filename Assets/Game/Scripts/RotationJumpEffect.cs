@@ -7,6 +7,7 @@ public class RotationJumpEffect : JumpEffect
 {
     [SerializeField] private float duration = 1f;
     [SerializeField][Range(0f, 1f)] private float minNormalizedValueToRotate = .2f;
+    [SerializeField] private Ease rotationEase = Ease.OutCubic;
     [SerializeField] private int maxTurns = 3;
     [SerializeField] private FloatValue normalizedJumpStrength;
 
@@ -28,9 +29,8 @@ public class RotationJumpEffect : JumpEffect
     public override void Jump(PlayerJump jumper)
     {
         int turns = GetTurnCount();
-        Debug.Log("Turns = " + turns);
         Vector3 rotAxis = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-        Tween.Custom(0f, 360f * turns, duration, angle => jumper.rotationTransform.rotation = Quaternion.AngleAxis(angle, rotAxis), Ease.OutBack);
+        Tween.Custom(0f, 360f * turns, duration, angle => jumper.rotationTransform.rotation = Quaternion.AngleAxis(angle, rotAxis), rotationEase);
     }
 
     public override void ApexReached(PlayerJump jumper)

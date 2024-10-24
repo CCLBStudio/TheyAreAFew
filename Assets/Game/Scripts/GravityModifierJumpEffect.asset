@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2ccba5ae2307a84e9c81eca35af4e47, type: 3}
-  m_Name: RotationJumpEffect
+  m_Script: {fileID: 11500000, guid: ba5623665fd51304d9f59676d5b4703e, type: 3}
+  m_Name: GravityModifierJumpEffect
   m_EditorClassIdentifier: 
-  duration: 1
-  minNormalizedValueToRotate: 0.5
-  maxTurns: 3
+  upwardGravityScale: 20
+  downwardGravityScale: 0.8
+  apexGravityTime: 0.08
+  maximumFallingVelocity: -8
   normalizedJumpStrength: {fileID: 11400000, guid: 2ee73b39d6524a940aaacb1b816a6a86,
     type: 2}

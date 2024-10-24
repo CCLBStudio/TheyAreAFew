@@ -8,20 +8,15 @@ public class AddForceJumpEffect : JumpEffect
     [SerializeField] private float maxJumpForce = 25f;
     [SerializeField] private FloatValue normalizedJumpStrength;
 
-    private float _startChargingTime;
     private bool _jumpInputReleased;
     
     public override void ChargingJump(PlayerJump jumper)
     {
-        _startChargingTime = Time.time;
         _jumpInputReleased = false;
     }
 
     public override void Jump(PlayerJump jumper)
     {
-        float time = Time.time;
-        float deltaTime = time - _startChargingTime;
-        //_normalizedJumpForce = Mathf.Clamp(deltaTime / pressTimeForMaxForce, 0f, 1f);
         _jumpInputReleased = true;
     }
 
@@ -38,7 +33,7 @@ public class AddForceJumpEffect : JumpEffect
         if (_jumpInputReleased)
         {
             _jumpInputReleased = false;
-            jumper.movementRb.AddForce(Vector3.up * (maxJumpForce * normalizedJumpStrength.Value), ForceMode.Impulse);
+            jumper.movementRb.AddForce(Vector2.up * (maxJumpForce * normalizedJumpStrength.Value), ForceMode2D.Impulse);
         }
     }
 }
