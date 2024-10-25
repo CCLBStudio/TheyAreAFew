@@ -681,9 +681,12 @@ MonoBehaviour:
   movementRb: {fileID: 7343448206477088489}
   scaleTransform: {fileID: 5141426816223797106}
   rotationTransform: {fileID: 356304423964959055}
+  inputReader: {fileID: 11400000, guid: d3ee40d4cce53df4cb81b7af6cfaf165, type: 2}
   normalizedJumpStrength: {fileID: 11400000, guid: 2ee73b39d6524a940aaacb1b816a6a86,
     type: 2}
   pressTimeForMaxJump: {fileID: 11400000, guid: 7f0d98a8873c61c47addb3e832ee7c9e,
+    type: 2}
+  groundedGravityScale: {fileID: 11400000, guid: 4828424fa736b1c4f94c087f8338142c,
     type: 2}
   inputBufferTime: 0.25
   jumpEffects:

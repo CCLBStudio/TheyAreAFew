@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upwardGravityScale: 20
   downwardGravityScale: 0.8
-  apexGravityTime: 0.08
+  apexGravityTime: 0.06
   maximumFallingVelocity: -8
+  normalizedJumpStrengthOffset: 0.5
+  verticalVelocityForApexGravitySmoothing: 15
   normalizedJumpStrength: {fileID: 11400000, guid: 2ee73b39d6524a940aaacb1b816a6a86,
+    type: 2}
+  groundedGravityScale: {fileID: 11400000, guid: 4828424fa736b1c4f94c087f8338142c,
     type: 2}

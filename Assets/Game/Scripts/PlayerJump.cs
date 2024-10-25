@@ -13,8 +13,10 @@ public class PlayerJump : MonoBehaviour
     public Transform scaleTransform;
     public Transform rotationTransform;
 
+    [SerializeField] private InputReader inputReader;
     [SerializeField] private FloatValue normalizedJumpStrength;
     [SerializeField] private FloatValue pressTimeForMaxJump;
+    [SerializeField] private FloatValue groundedGravityScale;
     [SerializeField] private float inputBufferTime = .15f;
     [SerializeField] private List<JumpEffect> jumpEffects;
 
@@ -27,44 +29,57 @@ public class PlayerJump : MonoBehaviour
     private float _beginChargeTime;
     private bool _hasPressedInput;
 
-    private Vector3 _previousVelocity;
+    private Vector3 _previousPosition;
 
     private void Start()
     {
-        _previousVelocity = movementRb.linearVelocity;
+        _previousPosition = movementRb.linearVelocity;
         _isChargingJump = false;
         _isJumping = false;
         _grounded = false;
         _reachedApex = false;
+
+        inputReader.JumpBeginEvent += OnJumpInputPressed;
+        inputReader.JumpReleaseEvent += OnJumpInputReleased;
+    }
+
+    private void OnJumpInputPressed()
+    {
+        _pressingTime = Time.time;
+        _hasPressedInput = true;
+        BeginJumpCharge();
+    }
+
+    private void OnJumpInputReleased()
+    {
+        _hasPressedInput = false;
+
+        if (!_isChargingJump)
+        {
+            return;
+        }
+            
+        _isChargingJump = false;
+        _isJumping = true;
+        _reachedApex = false;
+        normalizedJumpStrength.Value = Mathf.Clamp01((Time.time - _beginChargeTime) / pressTimeForMaxJump.Value);
+
+        foreach (var effect in jumpEffects)
+        {
+            effect.Jump(this);
+        }
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _pressingTime = Time.time;
-            _hasPressedInput = true;
-            BeginJumpCharge();
+            OnJumpInputPressed();
         }
         
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            _hasPressedInput = false;
-
-            if (!_isChargingJump)
-            {
-                return;
-            }
-            
-            _isChargingJump = false;
-            _isJumping = true;
-            _reachedApex = false;
-            normalizedJumpStrength.Value = Mathf.Clamp01((Time.time - _beginChargeTime) / pressTimeForMaxJump.Value);
-
-            foreach (var effect in jumpEffects)
-            {
-                effect.Jump(this);
-            }
+            OnJumpInputReleased();
         }
     }
 
@@ -79,7 +94,7 @@ public class PlayerJump : MonoBehaviour
         _isChargingJump = true;
         _reachedApex = false;
         normalizedJumpStrength.Value = 0f;
-        _previousVelocity = Vector3.zero;
+        _previousPosition = Vector3.zero;
 
         foreach (var effect in jumpEffects)
         {
@@ -96,7 +111,7 @@ public class PlayerJump : MonoBehaviour
 
         if(IsJumping)
         {
-            Vector2 dir = movementRb.position - (Vector2)_previousVelocity;
+            Vector2 dir = movementRb.position - (Vector2)_previousPosition;
 
             if (dir.y < 0f && !_reachedApex)
             {
@@ -107,7 +122,7 @@ public class PlayerJump : MonoBehaviour
                 }
             }
 
-            _previousVelocity = movementRb.position;
+            _previousPosition = movementRb.position;
         }
     }
 
@@ -120,6 +135,7 @@ public class PlayerJump : MonoBehaviour
     {
         _isJumping = false;
         _grounded = true;
+        movementRb.gravityScale = groundedGravityScale.Value;
 
         foreach (var effect in jumpEffects)
         {

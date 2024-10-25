@@ -38,17 +38,15 @@ namespace ReaaliStudio.Systems.ScriptableValue
             }
             else if(!value.TargetTypeIsList && property.objectReferenceValue)
             {
-                if (Application.isPlaying)
-                {
-                    EditorGUI.LabelField(properties.secondaryRect, "No editing while playing", EditorStyles.boldLabel);
-                    return;
-                }
+                GUI.enabled = !Application.isPlaying;
                 
                 properties.secondaryRect.width = 200f;
                 properties.valueSerializedObject ??= new SerializedObject(property.objectReferenceValue);
                 SerializedProperty valueProperty = properties.valueSerializedObject.FindProperty(ScriptableValue<dynamic>.ValueProperty);
                 EditorGUI.PropertyField(properties.secondaryRect, valueProperty, new GUIContent(""));
                 properties.valueSerializedObject.ApplyModifiedProperties();
+                
+                GUI.enabled = true;
             }
         }
 

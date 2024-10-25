@@ -39,6 +39,7 @@ public class RotationJumpEffect : JumpEffect
 
     public override void Landed(PlayerJump jumper)
     {
+        
     }
 
     public override void OnFixedUpdate(PlayerJump jumper)

@@ -9,10 +9,14 @@ public class GravityModifierJumpEffect : JumpEffect
     [SerializeField] private float downwardGravityScale = 1f;
     [SerializeField] private float apexGravityTime = .2f;
     [SerializeField] private float maximumFallingVelocity = 1f;
+    [SerializeField] [Range(0f, 1f)] private float normalizedJumpStrengthOffset = .4f;
+    [SerializeField] private float verticalVelocityForApexGravitySmoothing = 3f;
     [SerializeField] private FloatValue normalizedJumpStrength;
+    [SerializeField] private FloatValue groundedGravityScale;
     
     [NonSerialized] private bool _isDoingAntiGravityApex;
     [NonSerialized] private float _apexReachedTime;
+    [NonSerialized] private float _upwardGravityScale;
 
     public override void ApexReached(PlayerJump jumper)
     {
@@ -30,7 +34,8 @@ public class GravityModifierJumpEffect : JumpEffect
     public override void Jump(PlayerJump jumper)
     {
         _isDoingAntiGravityApex = false;
-        jumper.movementRb.gravityScale = upwardGravityScale;
+        _upwardGravityScale = Mathf.Clamp01(normalizedJumpStrength.Value + normalizedJumpStrengthOffset) * (groundedGravityScale.Value + (upwardGravityScale - groundedGravityScale.Value));
+        jumper.movementRb.gravityScale = _upwardGravityScale;
     }
 
     public override void Landed(PlayerJump jumper)
@@ -39,7 +44,16 @@ public class GravityModifierJumpEffect : JumpEffect
 
     public override void OnFixedUpdate(PlayerJump jumper)
     {
-        if (jumper.ReachedApex && _isDoingAntiGravityApex && Time.time - _apexReachedTime >= apexGravityTime * normalizedJumpStrength.Value)
+        if (!jumper.IsJumping)
+        {
+            return;
+        }
+        
+        if (!jumper.ReachedApex && jumper.movementRb.linearVelocityY <= verticalVelocityForApexGravitySmoothing)
+        {
+            jumper.movementRb.gravityScale = Mathf.Clamp(jumper.movementRb.linearVelocityY / verticalVelocityForApexGravitySmoothing * _upwardGravityScale, .15f, _upwardGravityScale);
+        }
+        else if (jumper.ReachedApex && _isDoingAntiGravityApex && Time.time - _apexReachedTime >= apexGravityTime * normalizedJumpStrength.Value)
         {
             _isDoingAntiGravityApex = false;
             jumper.movementRb.gravityScale = downwardGravityScale;
