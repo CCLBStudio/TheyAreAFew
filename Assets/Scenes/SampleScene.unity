@@ -726,7 +726,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 10
+  m_LinearDamping: 15
   m_AngularDamping: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -753,7 +753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputReader: {fileID: 11400000, guid: d3ee40d4cce53df4cb81b7af6cfaf165, type: 2}
-  moveSpeed: 125
+  moveSpeed: 300
   jumper: {fileID: 7166582280015430648}
   rb: {fileID: 7343448206477088489}
 --- !u!4 &7721354196139911705
