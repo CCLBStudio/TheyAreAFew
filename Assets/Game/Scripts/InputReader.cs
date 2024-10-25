@@ -27,6 +27,15 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
         }
     }
 
+    private void OnDisable()
+    {
+        if (_playerInputs != null)
+        {
+            _playerInputs.Player.Disable();
+            _playerInputs.UI.Disable();
+        }
+    }
+
     public void Init()
     {
         if (_playerInputs != null)

@@ -10,25 +10,25 @@ public class AddForceJumpEffect : JumpEffect
 
     private bool _jumpInputReleased;
     
-    public override void ChargingJump(PlayerJump jumper)
+    public override void ChargingJump(PlayerJumper jumper)
     {
         _jumpInputReleased = false;
     }
 
-    public override void Jump(PlayerJump jumper)
+    public override void Jump(PlayerJumper jumper)
     {
         _jumpInputReleased = true;
     }
 
-    public override void ApexReached(PlayerJump jumper)
+    public override void ApexReached(PlayerJumper jumper)
     {
     }
 
-    public override void Landed(PlayerJump jumper)
+    public override void Landed(PlayerJumper jumper)
     {
     }
     
-    public override void OnFixedUpdate(PlayerJump jumper)
+    public override void OnFixedUpdate(PlayerJumper jumper)
     {
         if (_jumpInputReleased)
         {

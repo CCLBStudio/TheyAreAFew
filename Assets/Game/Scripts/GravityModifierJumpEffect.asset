@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GravityModifierJumpEffect
   m_EditorClassIdentifier: 
   upwardGravityScale: 20
-  downwardGravityScale: 0.8
+  downwardGravityScale: 20
   apexGravityTime: 0.06
   maximumFallingVelocity: -8
   normalizedJumpStrengthOffset: 0.5

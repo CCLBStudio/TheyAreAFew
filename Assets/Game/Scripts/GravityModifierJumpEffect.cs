@@ -18,7 +18,7 @@ public class GravityModifierJumpEffect : JumpEffect
     [NonSerialized] private float _apexReachedTime;
     [NonSerialized] private float _upwardGravityScale;
 
-    public override void ApexReached(PlayerJump jumper)
+    public override void ApexReached(PlayerJumper jumper)
     {
         _apexReachedTime = Time.time;
         jumper.movementRb.gravityScale = 0f;
@@ -26,23 +26,23 @@ public class GravityModifierJumpEffect : JumpEffect
         _isDoingAntiGravityApex = true;
     }
 
-    public override void ChargingJump(PlayerJump jumper)
+    public override void ChargingJump(PlayerJumper jumper)
     {
 
     }
 
-    public override void Jump(PlayerJump jumper)
+    public override void Jump(PlayerJumper jumper)
     {
         _isDoingAntiGravityApex = false;
         _upwardGravityScale = Mathf.Clamp01(normalizedJumpStrength.Value + normalizedJumpStrengthOffset) * (groundedGravityScale.Value + (upwardGravityScale - groundedGravityScale.Value));
         jumper.movementRb.gravityScale = _upwardGravityScale;
     }
 
-    public override void Landed(PlayerJump jumper)
+    public override void Landed(PlayerJumper jumper)
     {
     }
 
-    public override void OnFixedUpdate(PlayerJump jumper)
+    public override void OnFixedUpdate(PlayerJumper jumper)
     {
         if (!jumper.IsJumping)
         {
@@ -60,7 +60,7 @@ public class GravityModifierJumpEffect : JumpEffect
         }
         else if(_isDoingAntiGravityApex)
         {
-            jumper.movementRb.linearVelocity = Vector2.zero;
+            jumper.movementRb.linearVelocityY = 0f;
         }
         else if (jumper.ReachedApex && !jumper.Grounded)
         {

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed30c3d5e590b948ae0ec93a95c4477, type: 3}
   m_Name: AddForceJumpEffect
   m_EditorClassIdentifier: 
-  maxJumpForce: 75
+  maxJumpForce: 125
   normalizedJumpStrength: {fileID: 11400000, guid: 2ee73b39d6524a940aaacb1b816a6a86,
     type: 2}

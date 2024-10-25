@@ -10,16 +10,16 @@ public class ScaleJumpEffect : JumpEffect
 
     private Tween _currentTween;
 
-    public override void ApexReached(PlayerJump jumper)
+    public override void ApexReached(PlayerJumper jumper)
     {
     }
 
-    public override void ChargingJump(PlayerJump jumper)
+    public override void ChargingJump(PlayerJumper jumper)
     {
         _currentTween = Tween.Scale(jumper.scaleTransform, new Vector3(1f / minScaleSize / 2f, minScaleSize, 1f / minScaleSize / 2f), chargingTime, Ease.OutQuad);
     }
 
-    public override void Jump(PlayerJump jumper)
+    public override void Jump(PlayerJumper jumper)
     {
         if (_currentTween.isAlive)
         {
@@ -29,12 +29,12 @@ public class ScaleJumpEffect : JumpEffect
         _currentTween = Tween.Scale(jumper.scaleTransform, Vector3.one, resetTime, Ease.OutBack);
     }
 
-    public override void Landed(PlayerJump jumper)
+    public override void Landed(PlayerJumper jumper)
     {
         jumper.scaleTransform.localScale = Vector3.one;
     }
 
-    public override void OnFixedUpdate(PlayerJump jumper)
+    public override void OnFixedUpdate(PlayerJumper jumper)
     {
     }
 }

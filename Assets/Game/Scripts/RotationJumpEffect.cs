@@ -22,27 +22,27 @@ public class RotationJumpEffect : JumpEffect
         return Mathf.Clamp((int)(normalizedN * (maxTurns - 1)) + 1, 1, maxTurns);
     }
     
-    public override void ChargingJump(PlayerJump jumper)
+    public override void ChargingJump(PlayerJumper jumper)
     {
     }
 
-    public override void Jump(PlayerJump jumper)
+    public override void Jump(PlayerJumper jumper)
     {
         int turns = GetTurnCount();
         Vector3 rotAxis = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
         Tween.Custom(0f, 360f * turns, duration, angle => jumper.rotationTransform.rotation = Quaternion.AngleAxis(angle, rotAxis), rotationEase);
     }
 
-    public override void ApexReached(PlayerJump jumper)
+    public override void ApexReached(PlayerJumper jumper)
     {
     }
 
-    public override void Landed(PlayerJump jumper)
+    public override void Landed(PlayerJumper jumper)
     {
         
     }
 
-    public override void OnFixedUpdate(PlayerJump jumper)
+    public override void OnFixedUpdate(PlayerJumper jumper)
     {
     }
 }

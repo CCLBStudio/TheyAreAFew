@@ -1,13 +1,13 @@
-using System;
 using ReaaliStudio.Systems.ScriptableValue;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerJump : MonoBehaviour
+public class PlayerJumper : MonoBehaviour
 {
     public bool IsJumping => _isJumping;
     public bool ReachedApex => _reachedApex;
     public bool Grounded => _grounded;
+    public bool IsChargingJump => _isChargingJump;
 
     public Rigidbody2D movementRb;
     public Transform scaleTransform;
