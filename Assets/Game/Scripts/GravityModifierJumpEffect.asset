@@ -15,7 +15,7 @@ MonoBehaviour:
   upwardGravityScale: 20
   downwardGravityScale: 20
   apexGravityTime: 0.06
-  maximumFallingVelocity: -8
+  maximumFallingVelocity: -1
   normalizedJumpStrengthOffset: 0.5
   verticalVelocityForApexGravitySmoothing: 15
   normalizedJumpStrength: {fileID: 11400000, guid: 2ee73b39d6524a940aaacb1b816a6a86,
