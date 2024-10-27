@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba5623665fd51304d9f59676d5b4703e, type: 3}
+  m_Name: GravityModifierJumpEffect
+  m_EditorClassIdentifier: 
+  upwardGravityScale: 20
+  downwardGravityScale: 20
+  apexGravityTime: 0.06
+  maximumFallingVelocity: -8
+  normalizedJumpStrengthOffset: 0.5
+  verticalVelocityForApexGravitySmoothing: 15
+  normalizedJumpStrength: {fileID: 11400000, guid: 2ee73b39d6524a940aaacb1b816a6a86,
+    type: 2}
+  groundedGravityScale: {fileID: 11400000, guid: 4828424fa736b1c4f94c087f8338142c,
+    type: 2}
