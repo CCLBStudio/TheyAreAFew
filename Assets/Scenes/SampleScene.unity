@@ -81423,6 +81423,7 @@ GameObject:
   - component: {fileID: 6031315079815213434}
   - component: {fileID: 7343448206477088490}
   - component: {fileID: 7166582280015430648}
+  - component: {fileID: 7343448206477088491}
   - component: {fileID: 7343448206477088489}
   m_Layer: 0
   m_Name: Player
@@ -81474,6 +81475,19 @@ MonoBehaviour:
   moveSpeed: 300
   jumper: {fileID: 7166582280015430648}
   rb: {fileID: 7343448206477088489}
+--- !u!114 &7343448206477088491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7343448206477088488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5e4aa87e1dab73498e83dd27f56a565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapon: {fileID: 11400000, guid: 9013efff55c84f54286e2ae15dd6b614, type: 2}
 --- !u!4 &7721354196139911705
 Transform:
   m_ObjectHideFlags: 0
