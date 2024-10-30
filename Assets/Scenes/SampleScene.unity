@@ -81487,7 +81487,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e4aa87e1dab73498e83dd27f56a565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 11400000, guid: 9013efff55c84f54286e2ae15dd6b614, type: 2}
+  inputReader: {fileID: 11400000, guid: d3ee40d4cce53df4cb81b7af6cfaf165, type: 2}
+  startWeapon: {fileID: 11400000, guid: 9013efff55c84f54286e2ae15dd6b614, type: 2}
+  weaponPivot: {fileID: 6031315079815213434}
 --- !u!4 &7721354196139911705
 Transform:
   m_ObjectHideFlags: 0

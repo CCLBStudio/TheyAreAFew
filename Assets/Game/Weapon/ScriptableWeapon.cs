@@ -1,3 +1,4 @@
+using System;
 using CCLBStudio.ScriptablePooling;
 using UnityEngine;
 
@@ -21,9 +22,12 @@ public class ScriptableWeapon : ScriptableObject
     [SerializeField] private RuntimeWeapon weaponPrefab;
     [SerializeField] private ScriptablePool bulletPool;
 
-    public void Equip(Transform bulletOrigin)
+
+    public RuntimeWeapon Equip(PlayerAttack attacker)
     {
         var weapon = Instantiate(weaponPrefab.gameObject).GetComponent<RuntimeWeapon>();
-        weapon.Initialize(bulletOrigin);
+        weapon.Initialize(attacker);
+
+        return weapon;
     }
 }
