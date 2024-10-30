@@ -11,6 +11,9 @@ public class ScriptableWeapon : ScriptableObject
     public float Dispersion => dispersion;
     public RuntimeWeapon WeaponPrefab => weaponPrefab;
     public ScriptablePool BulletPool => bulletPool;
+    public GameObject Casing => casing;
+    public float CasingEjectionForce => casingEjectionForce;
+    public float CasingDispersion => casingDispersion;
 
     [Tooltip("The base damages of the weapon.")]
     [SerializeField] private float damages;
@@ -20,12 +23,15 @@ public class ScriptableWeapon : ScriptableObject
     [Tooltip("The maximum dispersion for each bullet. Dispersion is a random angle between in range [-dispersion : dispersion] added to the shooting direction.")]
     [SerializeField] private float dispersion;
     [SerializeField] private RuntimeWeapon weaponPrefab;
+    [SerializeField] private GameObject casing;
+    [SerializeField] private float casingEjectionForce = 20f;
+    [SerializeField] private float casingDispersion = 5f;
     [SerializeField] private ScriptablePool bulletPool;
 
 
     public RuntimeWeapon Equip(PlayerAttack attacker)
     {
-        var weapon = Instantiate(weaponPrefab.gameObject).GetComponent<RuntimeWeapon>();
+        var weapon = Instantiate(weaponPrefab.gameObject, attacker.WeaponHolder).GetComponent<RuntimeWeapon>();
         weapon.Initialize(attacker);
 
         return weapon;

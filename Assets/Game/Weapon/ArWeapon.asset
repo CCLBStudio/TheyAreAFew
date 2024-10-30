@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4be28f55f569d4242911bde711a4ad9a, type: 3}
-  m_Name: TestWeapon
+  m_Name: ArWeapon
   m_EditorClassIdentifier: 
   damages: 5
-  attackSpeed: 30
-  bulletSpeed: 25
+  attackSpeed: 20
+  bulletSpeed: 70
   dispersion: 5
   weaponPrefab: {fileID: 2114472549662428182, guid: 38a221c4887ac3743be4e849d329a2f6,
     type: 3}
+  casing: {fileID: 7084930153273211492, guid: bf8ad436166f67347a7f40bbbf12177c, type: 3}
+  casingEjectionForce: 1.5
+  casingDispersion: 25
   bulletPool: {fileID: 11400000, guid: 9908f6fa45d618648ada32f501132f87, type: 2}

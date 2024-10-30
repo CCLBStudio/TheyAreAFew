@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public Transform WeaponHolder => weaponHolder;
+
     [SerializeField] private InputReader inputReader;
     [SerializeField] private ScriptableWeapon startWeapon;
     [SerializeField] private Transform weaponPivot;
+    [SerializeField] private Transform weaponHolder;
     
     private bool _isShooting;
     private float _shootingTimer;
@@ -22,6 +25,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
+        weaponPivot.rotation = Quaternion.FromToRotation(Vector3.right, _shootingDirection);
+        
         if(_shootingTimer > 0f)
         {
             _shootingTimer -= Time.deltaTime;
@@ -34,6 +39,7 @@ public class PlayerAttack : MonoBehaviour
         }
         
         _currentWeapon.Shoot(_shootingDirection);
+        _shootingTimer = 1f / _currentWeapon.AttackSpeed;
     }
 
     #endregion

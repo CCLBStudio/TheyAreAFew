@@ -18,7 +18,12 @@ public class RuntimeBullet : MonoBehaviour, IScriptablePooledObject
             return;
         }
 
-        rb.MovePosition(rb.position + Direction * weapon.BulletSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + Direction * (weapon.BulletSpeed * Time.fixedDeltaTime));
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Pool.ReleaseObject(this);
     }
 
     public void OnObjectCreated()
