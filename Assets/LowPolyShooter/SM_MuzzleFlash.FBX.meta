@@ -3,7 +3,12 @@ guid: 398c484292f153444bed04064c40d6e9
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Muzzle Flash
+    second: {fileID: 2100000, guid: feaaf94c1c67c5c449e2b7ea49db3313, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

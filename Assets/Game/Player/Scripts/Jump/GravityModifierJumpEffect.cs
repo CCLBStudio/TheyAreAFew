@@ -1,4 +1,5 @@
 using System;
+using PrimeTween;
 using ReaaliStudio.Systems.ScriptableValue;
 using UnityEngine;
 
@@ -16,15 +17,8 @@ public class GravityModifierJumpEffect : JumpEffect
     
     [NonSerialized] private bool _isDoingAntiGravityApex;
     [NonSerialized] private float _apexReachedTime;
-    [NonSerialized] private float _upwardGravityScale;
 
-    public override void ApexReached(PlayerJumper jumper)
-    {
-        _apexReachedTime = Time.time;
-        jumper.movementRb.gravityScale = 0f;
-        jumper.movementRb.linearVelocity = Vector2.zero;
-        _isDoingAntiGravityApex = true;
-    }
+    private Vector2 _additionalForceReference;
 
     public override void ChargingJump(PlayerJumper jumper)
     {
@@ -34,8 +28,14 @@ public class GravityModifierJumpEffect : JumpEffect
     public override void Jump(PlayerJumper jumper)
     {
         _isDoingAntiGravityApex = false;
-        _upwardGravityScale = Mathf.Clamp01(normalizedJumpStrength.Value + normalizedJumpStrengthOffset) * (groundedGravityScale.Value + (upwardGravityScale - groundedGravityScale.Value));
-        jumper.movementRb.gravityScale = _upwardGravityScale;
+        float scale = Mathf.Clamp01(normalizedJumpStrength.Value + normalizedJumpStrengthOffset) * (groundedGravityScale.Value + (upwardGravityScale - groundedGravityScale.Value));
+        _additionalForceReference = Physics2D.gravity * scale;
+    }
+    
+    public override void ApexReached(PlayerJumper jumper)
+    {
+        _apexReachedTime = Time.time;
+        _isDoingAntiGravityApex = true;
     }
 
     public override void Landed(PlayerJumper jumper)
@@ -44,26 +44,30 @@ public class GravityModifierJumpEffect : JumpEffect
 
     public override void OnFixedUpdate(PlayerJumper jumper)
     {
-        if (!jumper.IsJumping)
+        // if (!jumper.IsJumping)
+        // {
+        //     return;
+        // }
+
+        if (!jumper.ReachedApex)
         {
-            return;
+            var force = _additionalForceReference * Mathf.Clamp01(jumper.movementRb.linearVelocityY / verticalVelocityForApexGravitySmoothing);
+            jumper.movementRb.AddForce(force);
         }
-        
-        if (!jumper.ReachedApex && jumper.movementRb.linearVelocityY <= verticalVelocityForApexGravitySmoothing)
-        {
-            jumper.movementRb.gravityScale = Mathf.Clamp(jumper.movementRb.linearVelocityY / verticalVelocityForApexGravitySmoothing * _upwardGravityScale, .15f, _upwardGravityScale);
-        }
-        else if (jumper.ReachedApex && _isDoingAntiGravityApex && Time.time - _apexReachedTime >= apexGravityTime * normalizedJumpStrength.Value)
+        else if (_isDoingAntiGravityApex && Time.time - _apexReachedTime >= apexGravityTime * normalizedJumpStrength.Value)
         {
             _isDoingAntiGravityApex = false;
-            jumper.movementRb.gravityScale = downwardGravityScale;
+            Tween.Custom(Vector2.zero, Physics2D.gravity * downwardGravityScale, .25f, vector2 => _additionalForceReference = vector2);
+            //_additionalForceReference = Physics2D.gravity * downwardGravityScale;
         }
+        
         else if(_isDoingAntiGravityApex)
         {
             jumper.movementRb.linearVelocityY = 0f;
         }
         else if (jumper.ReachedApex && !jumper.Grounded)
         {
+            jumper.movementRb.AddForce(_additionalForceReference);
             jumper.movementRb.linearVelocityY = Mathf.Max(jumper.movementRb.linearVelocityY, maximumFallingVelocity);
         }
     }

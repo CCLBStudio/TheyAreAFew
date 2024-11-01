@@ -22,3 +22,4 @@ MonoBehaviour:
     type: 2}
   groundedGravityScale: {fileID: 11400000, guid: 4828424fa736b1c4f94c087f8338142c,
     type: 2}
+  additionalForce: {x: 0, y: -196.20001}
