@@ -16943,7 +16943,7 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1233549227}
   - {fileID: 868203219}
-  timeBetweenSpawns: 0.5
+  timeBetweenSpawns: 0.1
 --- !u!1 &425179187
 GameObject:
   m_ObjectHideFlags: 0
