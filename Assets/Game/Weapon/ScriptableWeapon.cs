@@ -11,6 +11,7 @@ public class ScriptableWeapon : ScriptableObject
     public float Dispersion => dispersion;
     public RuntimeWeapon WeaponPrefab => weaponPrefab;
     public ScriptablePool BulletPool => bulletPool;
+    public ScriptablePool CasingPool => casingPool;
     public ScriptablePool MuzzlePool => muzzlePool;
     public ScriptablePool GroundImpactPool => groundImpactPool;
     public GameObject Casing => casing;
@@ -26,6 +27,7 @@ public class ScriptableWeapon : ScriptableObject
     [Tooltip("Casing model")]
     [SerializeField] private GameObject casing;
     [SerializeField] private ScriptablePool bulletPool;
+    [SerializeField] private ScriptablePool casingPool;
     [SerializeField] private ScriptablePool muzzlePool;
     [SerializeField] private ScriptablePool groundImpactPool;
     
@@ -57,6 +59,7 @@ public class ScriptableWeapon : ScriptableObject
     {
         var weapon = Instantiate(weaponPrefab.gameObject, attacker.WeaponHolder).GetComponent<RuntimeWeapon>();
         bulletPool.Initialize();
+        casingPool.Initialize();
         muzzlePool.Initialize();
         groundImpactPool.Initialize();
 

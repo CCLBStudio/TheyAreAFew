@@ -8,15 +8,14 @@ public class RuntimeBullet : MonoBehaviour, IScriptablePooledObject
 
     [SerializeField] private Rigidbody2D rb;
 
-    private bool _isMoving;
+    private bool _isAlive;
     private bool _isInit;
     private float _currentLifetime;
     private ScriptableWeapon _currentWeapon;
-    private readonly ContactPoint2D[] _contacts = new ContactPoint2D[1];
 
     void FixedUpdate()
     {
-        if(!_isMoving || !_isInit)
+        if(!_isAlive || !_isInit)
         {
             return;
         }
@@ -31,6 +30,31 @@ public class RuntimeBullet : MonoBehaviour, IScriptablePooledObject
         rb.MovePosition(rb.position + Direction * (_currentWeapon.BulletSpeed * Time.fixedDeltaTime));
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!_isAlive)
+        {
+            return;
+        }
+        
+        var interactors = other.gameObject.GetComponents<IBulletInteractor>();
+        if (interactors.Length <= 0)
+        {
+            var effect = _currentWeapon.GroundImpactPool.RequestObjectAs<PooledParticleSystem>();
+            effect.transform.position = other.ClosestPoint(transform.position);
+            effect.Play();
+            Pool.ReleaseObject(this);
+            return;
+        }
+
+        foreach (var i in interactors)
+        {
+            i.GetHit(this);
+        }
+        
+        Pool.ReleaseObject(this);
+    }
+    
     public void Initialize(ScriptableWeapon weapon)
     {
         _currentWeapon = weapon;
@@ -38,29 +62,25 @@ public class RuntimeBullet : MonoBehaviour, IScriptablePooledObject
         _isInit = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public float GetDamages()
     {
-        var effect = _currentWeapon.GroundImpactPool.RequestObjectAs<PooledParticleSystem>();
-        effect.transform.position = other.ClosestPoint(transform.position);
-        effect.Play();
-        
-        Pool.ReleaseObject(this);
+        return _currentWeapon.Damages;
     }
 
     public void OnObjectCreated()
     {
-        _isMoving = false;
+        _isAlive = false;
         _isInit = false;
     }
 
     public void OnObjectReleased()
     {
-        _isMoving = false;
+        _isAlive = false;
         _isInit = false;
     }
 
     public void OnObjectRequested()
     {
-        _isMoving = true;
+        _isAlive = true;
     }
 }

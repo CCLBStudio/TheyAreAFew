@@ -19,6 +19,7 @@ public class PlayerJumper : MonoBehaviour
     [SerializeField] private FloatValue groundedGravityScale;
     [SerializeField] private float inputBufferTime = .15f;
     [SerializeField] private List<JumpEffect> jumpEffects;
+    [SerializeField] private LayerMask groundLayers;
 
     private bool _isJumping;
     private bool _isChargingJump;
@@ -128,23 +129,29 @@ public class PlayerJumper : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        _grounded = false;
+        if ((groundLayers.value & (1 << other.gameObject.layer)) != 0)
+        {
+            _grounded = false;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        _isJumping = false;
-        _grounded = true;
-        movementRb.gravityScale = groundedGravityScale.Value;
-
-        foreach (var effect in jumpEffects)
+        if ((groundLayers.value & (1 << other.gameObject.layer)) != 0)
         {
-            effect.Landed(this);
-        }
+            _isJumping = false;
+            _grounded = true;
+            movementRb.gravityScale = groundedGravityScale.Value;
 
-        if (_hasPressedInput && Time.time - _pressingTime <= inputBufferTime)
-        {
-            BeginJumpCharge();
+            foreach (var effect in jumpEffects)
+            {
+                effect.Landed(this);
+            }
+
+            if (_hasPressedInput && Time.time - _pressingTime <= inputBufferTime)
+            {
+                BeginJumpCharge();
+            }
         }
     }
 }

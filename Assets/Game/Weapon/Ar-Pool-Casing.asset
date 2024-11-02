@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 38dc05e3ca7b2804bb5ee299c59fa021, type: 3}
-  m_Name: Ar-Pool-Bullet
+  m_Name: Ar-Pool-Casing
   m_EditorClassIdentifier: 
-  pooledObjectPrefab: {fileID: 2164283055284734496, guid: 58b371ec4f843c041a83add2b1fabf3f,
+  pooledObjectPrefab: {fileID: 7084930153273211492, guid: b4f47637dc74a674baa7846db3502c9f,
     type: 3}
   quantityToInstantiate: 50
   disableObjectOnCreation: 1

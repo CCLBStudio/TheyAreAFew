@@ -5,8 +5,10 @@ public class PooledParticleSystem : MonoBehaviour, IScriptablePooledObject
 {
     public ScriptablePool Pool { get; set; }
 
-    private ParticleSystem _system;
+    [SerializeField] private ParticleSystem system;
+
     private bool _checkForRelease;
+    private Quaternion _initialRotation;
 
     private void Update()
     {
@@ -15,7 +17,7 @@ public class PooledParticleSystem : MonoBehaviour, IScriptablePooledObject
             return;
         }
 
-        if (!_system.IsAlive())
+        if (!system.IsAlive())
         {
             Pool.ReleaseObject(this);
         }
@@ -23,23 +25,28 @@ public class PooledParticleSystem : MonoBehaviour, IScriptablePooledObject
 
     public void Play()
     {
-        if (!_system)
+        if (!system)
         {
             Pool.ReleaseObject(this);
             return;
         }
 
-        _system.Play(true);
+        system.Play(true);
         _checkForRelease = true;
     }
     
     public void OnObjectCreated()
     {
-        _system = GetComponent<ParticleSystem>();
-        if (!_system)
+        if (!system)
         {
-            Debug.LogError("No particle system on objet !");
+            system = GetComponent<ParticleSystem>();
+            if (!system)
+            {
+                Debug.LogError("No particle system on objet !");
+            }
         }
+
+        _initialRotation = transform.rotation;
     }
 
     public void OnObjectRequested()
@@ -49,5 +56,7 @@ public class PooledParticleSystem : MonoBehaviour, IScriptablePooledObject
     public void OnObjectReleased()
     {
         _checkForRelease = false;
+        transform.position = Vector3.zero;
+        transform.rotation = _initialRotation;
     }
 }

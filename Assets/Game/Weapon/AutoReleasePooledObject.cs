@@ -1,7 +1,7 @@
 using CCLBStudio.ScriptablePooling;
 using UnityEngine;
 
-public class PooledMuzzle : MonoBehaviour, IScriptablePooledObject
+public class AutoReleasePooledObject : MonoBehaviour, IScriptablePooledObject
 {
     public ScriptablePool Pool { get; set; }
     

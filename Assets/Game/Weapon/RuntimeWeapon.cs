@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -11,7 +12,7 @@ public class RuntimeWeapon : MonoBehaviour
     [SerializeField] private Transform muzzleOrigin;
     [SerializeField] private Transform casingOrigin;
 
-    [SerializeField] private Vector2 casingEjectionDirection = new Vector2(-1f, 2f).normalized;
+    [SerializeField] private Vector3 casingEjectionDirection = new Vector3(-1f, 2f, 0f).normalized;
 
     private Rigidbody2D _playerRb;
     private PlayerAttacker _attacker;
@@ -43,7 +44,7 @@ public class RuntimeWeapon : MonoBehaviour
 
     private void SpawnMuzzle()
     {
-        var muzzle = weapon.MuzzlePool.RequestObjectAs<PooledMuzzle>();
+        var muzzle = weapon.MuzzlePool.RequestObjectAs<AutoReleasePooledObject>();
         muzzle.transform.SetParent(muzzleOrigin);
         muzzle.transform.localPosition = Vector3.zero;
         muzzle.transform.localRotation = quaternion.identity;
@@ -59,11 +60,12 @@ public class RuntimeWeapon : MonoBehaviour
 
     private void SpawnCasing()
     {
-        var rb = Instantiate(weapon.Casing, casingOrigin.position, Quaternion.identity).GetComponent<Rigidbody2D>();
-        Vector2 dir = ApplyRotation(casingEjectionDirection, Random.Range(-weapon.CasingDispersion, weapon.CasingDispersion)).normalized;
+        var casing = weapon.CasingPool.RequestObjectAs<PooledCasing>();
+        casing.transform.SetPositionAndRotation(casingOrigin.position, Random.rotation);
+        Vector3 dir = ApplyRotation(casingEjectionDirection, Random.Range(-weapon.CasingDispersion, weapon.CasingDispersion)).normalized;
         
-        rb.AddForce(dir * weapon.CasingEjectionForce, ForceMode2D.Impulse);
-        rb.AddTorque(weapon.CasingEjectionForce, ForceMode2D.Impulse);
+        casing.Rigidbody.AddForce(dir * weapon.CasingEjectionForce, ForceMode.Impulse);
+        casing.Rigidbody.AddTorque(new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * weapon.CasingEjectionForce, ForceMode.Impulse);
     }
     
     private Vector2 ApplyRotation(Vector2 direction, float angle)
@@ -75,8 +77,25 @@ public class RuntimeWeapon : MonoBehaviour
         return new Vector2(cos * direction.x - sin * direction.y, sin * direction.x + cos * direction.y);
     }
 
+    private Vector3 ApplyRotation(Vector3 direction, float angle)
+    {
+        float rad = angle * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(rad);
+        float sin = Mathf.Sin(rad);
+
+        float newX = cos * direction.x - sin * direction.y;
+        float newY = sin * direction.x + cos * direction.y;
+
+        return new Vector3(newX, newY, direction.z);
+    }
+
     private float GetAttackSpeed()
     {
         return weapon.AttackSpeed;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawLine(casingOrigin.position, casingOrigin.position + casingEjectionDirection);
     }
 }
