@@ -32,7 +32,7 @@ public class Propulsor : MonoBehaviour
             }
             
             Debug.Log("Fuck");
-            _scaleTween = Tween.Scale(visual, _baseScale * 2f, .5f, Ease.InOutSine);
+            _scaleTween = Tween.Scale(visual, _baseScale * 2f, .25f, Ease.InOutSine);
         }
 
         _inRange.Add(propulsable);

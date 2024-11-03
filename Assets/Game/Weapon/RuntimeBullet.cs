@@ -36,6 +36,8 @@ public class RuntimeBullet : MonoBehaviour, IScriptablePooledObject
         {
             return;
         }
+
+        _isAlive = false;
         
         var interactors = other.gameObject.GetComponents<IBulletInteractor>();
         if (interactors.Length <= 0)
