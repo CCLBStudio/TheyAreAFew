@@ -16,6 +16,7 @@ public class GravityModifierJumpEffect : JumpEffect
     [SerializeField] private FloatValue groundedGravityScale;
     
     [NonSerialized] private bool _isDoingAntiGravityApex;
+    [NonSerialized] private bool _isChargingPropulsion;
     [NonSerialized] private float _apexReachedTime;
 
     private Vector2 _additionalForceReference;
@@ -44,11 +45,11 @@ public class GravityModifierJumpEffect : JumpEffect
 
     public override void OnFixedUpdate(PlayerJumper jumper)
     {
-        // if (!jumper.IsJumping)
-        // {
-        //     return;
-        // }
-
+        if (_isChargingPropulsion)
+        {
+            return;
+        }
+        
         if (!jumper.ReachedApex)
         {
             var force = _additionalForceReference * Mathf.Clamp01(jumper.movementRb.linearVelocityY / verticalVelocityForApexGravitySmoothing);
@@ -58,7 +59,6 @@ public class GravityModifierJumpEffect : JumpEffect
         {
             _isDoingAntiGravityApex = false;
             Tween.Custom(Vector2.zero, Physics2D.gravity * downwardGravityScale, .25f, vector2 => _additionalForceReference = vector2);
-            //_additionalForceReference = Physics2D.gravity * downwardGravityScale;
         }
         
         else if(_isDoingAntiGravityApex)
@@ -70,5 +70,16 @@ public class GravityModifierJumpEffect : JumpEffect
             jumper.movementRb.AddForce(_additionalForceReference);
             jumper.movementRb.linearVelocityY = Mathf.Max(jumper.movementRb.linearVelocityY, maximumFallingVelocity);
         }
+    }
+
+    public override void ChargingPropulsion(PlayerJumper jumper)
+    {
+        _isChargingPropulsion = true;
+        _isDoingAntiGravityApex = false;
+    }
+
+    public override void Propulse(PlayerJumper jumper)
+    {
+        _isChargingPropulsion = false;
     }
 }

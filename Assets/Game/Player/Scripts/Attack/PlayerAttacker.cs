@@ -1,10 +1,11 @@
 using UnityEngine;
 
-public class PlayerAttacker : MonoBehaviour
+public class PlayerAttacker : MonoBehaviour, IPlayerBehaviour
 {
     public Transform WeaponHolder => weaponHolder;
     public Rigidbody2D PlayerRb => playerRb;
     public PlayerJumper Jumper { get; private set; }
+    public PlayerFacade Facade { get; set; }
 
     [SerializeField] private InputReader inputReader;
     [SerializeField] private ScriptableWeapon startWeapon;
@@ -52,4 +53,24 @@ public class PlayerAttacker : MonoBehaviour
         _isShooting = direction != Vector2.zero;
         _shootingDirection = direction.normalized;
     }
+
+    #region Player Behaviour Methods
+
+    public void OnEnterPropulsor(Propulsor propulsor)
+    {
+    }
+
+    public void OnExitPropulsor(Propulsor propulsor)
+    {
+    }
+
+    public void OnPropulsionInputPressed()
+    {
+    }
+
+    public void OnPropulsionInputReleased()
+    {
+    }
+
+    #endregion
 }

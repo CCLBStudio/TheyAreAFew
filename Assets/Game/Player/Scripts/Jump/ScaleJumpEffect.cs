@@ -37,4 +37,12 @@ public class ScaleJumpEffect : JumpEffect
     public override void OnFixedUpdate(PlayerJumper jumper)
     {
     }
+
+    public override void ChargingPropulsion(PlayerJumper jumper)
+    {
+    }
+
+    public override void Propulse(PlayerJumper jumper)
+    {
+    }
 }

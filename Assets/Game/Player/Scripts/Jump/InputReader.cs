@@ -13,6 +13,8 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
     public event UnityAction<Vector2> AimEvent;
     public event UnityAction JumpBeginEvent;
     public event UnityAction JumpReleaseEvent;
+    public event UnityAction PropulsionBeginEvent;
+    public event UnityAction PropulsionReleaseEvent;
     
     private event UnityAction OnValidateEvent;
     private event UnityAction OnCancelEvent;
@@ -106,6 +108,18 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
         else if (context.phase == InputActionPhase.Canceled)
         {
             JumpReleaseEvent?.Invoke();
+        }
+    }
+
+    public void OnPropulse(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            PropulsionBeginEvent?.Invoke();
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            PropulsionReleaseEvent?.Invoke();
         }
     }
 

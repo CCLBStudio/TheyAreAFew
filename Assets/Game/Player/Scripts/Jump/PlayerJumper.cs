@@ -2,12 +2,14 @@ using ReaaliStudio.Systems.ScriptableValue;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerJumper : MonoBehaviour
+public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
 {
     public bool IsJumping => _isJumping;
     public bool ReachedApex => _reachedApex;
     public bool Grounded => _grounded;
     public bool IsChargingJump => _isChargingJump;
+    public PlayerFacade Facade { get; set; }
+    public Propulsor InRangePropulsor { get; private set; }
 
     public Rigidbody2D movementRb;
     public Transform scaleTransform;
@@ -17,6 +19,7 @@ public class PlayerJumper : MonoBehaviour
     [SerializeField] private FloatValue normalizedJumpStrength;
     [SerializeField] private FloatValue pressTimeForMaxJump;
     [SerializeField] private FloatValue groundedGravityScale;
+    [SerializeField] private Vector2Value propulsionDirection;
     [SerializeField] private float inputBufferTime = .15f;
     [SerializeField] private List<JumpEffect> jumpEffects;
     [SerializeField] private LayerMask groundLayers;
@@ -28,9 +31,13 @@ public class PlayerJumper : MonoBehaviour
 
     private float _pressingTime;
     private float _beginChargeTime;
-    private bool _hasPressedInput;
+    private bool _hasPressedJumpInput;
 
     private Vector3 _previousPosition;
+    private bool _hasPressedPropulseInput;
+
+
+    #region Unity Events
 
     private void Start()
     {
@@ -42,35 +49,11 @@ public class PlayerJumper : MonoBehaviour
 
         inputReader.JumpBeginEvent += OnJumpInputPressed;
         inputReader.JumpReleaseEvent += OnJumpInputReleased;
+        inputReader.PropulsionBeginEvent += OnPropulsionInputPressed;
+        inputReader.PropulsionReleaseEvent += OnPropulsionInputReleased;
+        inputReader.MoveEvent += OrientPropulsion;
     }
-
-    private void OnJumpInputPressed()
-    {
-        _pressingTime = Time.time;
-        _hasPressedInput = true;
-        BeginJumpCharge();
-    }
-
-    private void OnJumpInputReleased()
-    {
-        _hasPressedInput = false;
-
-        if (!_isChargingJump)
-        {
-            return;
-        }
-            
-        _isChargingJump = false;
-        _isJumping = true;
-        _reachedApex = false;
-        normalizedJumpStrength.Value = Mathf.Clamp01((Time.time - _beginChargeTime) / pressTimeForMaxJump.Value);
-
-        foreach (var effect in jumpEffects)
-        {
-            effect.Jump(this);
-        }
-    }
-
+    
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -83,26 +66,7 @@ public class PlayerJumper : MonoBehaviour
             OnJumpInputReleased();
         }
     }
-
-    private void BeginJumpCharge()
-    {
-        if (_isJumping)
-        {
-            return;
-        }
-            
-        _beginChargeTime = Time.time;
-        _isChargingJump = true;
-        _reachedApex = false;
-        normalizedJumpStrength.Value = 0f;
-        _previousPosition = Vector3.zero;
-
-        foreach (var effect in jumpEffects)
-        {
-            effect.ChargingJump(this);
-        }
-    }
-
+    
     private void FixedUpdate()
     {
         foreach (var effect in jumpEffects)
@@ -148,10 +112,123 @@ public class PlayerJumper : MonoBehaviour
                 effect.Landed(this);
             }
 
-            if (_hasPressedInput && Time.time - _pressingTime <= inputBufferTime)
+            if (_hasPressedJumpInput && Time.time - _pressingTime <= inputBufferTime)
             {
                 BeginJumpCharge();
             }
         }
     }
+
+    #endregion
+
+    #region Jump Methods
+
+    private void OnJumpInputPressed()
+    {
+        _pressingTime = Time.time;
+        _hasPressedJumpInput = true;
+        BeginJumpCharge();
+    }
+
+    private void OnJumpInputReleased()
+    {
+        _hasPressedJumpInput = false;
+
+        if (!_isChargingJump)
+        {
+            return;
+        }
+            
+        _isChargingJump = false;
+        _isJumping = true;
+        _reachedApex = false;
+        normalizedJumpStrength.Value = Mathf.Clamp01((Time.time - _beginChargeTime) / pressTimeForMaxJump.Value);
+
+        foreach (var effect in jumpEffects)
+        {
+            effect.Jump(this);
+        }
+    }
+
+    private void BeginJumpCharge()
+    {
+        if (_isJumping)
+        {
+            return;
+        }
+            
+        _beginChargeTime = Time.time;
+        _isChargingJump = true;
+        _reachedApex = false;
+        normalizedJumpStrength.Value = 0f;
+        _previousPosition = Vector3.zero;
+
+        foreach (var effect in jumpEffects)
+        {
+            effect.ChargingJump(this);
+        }
+    }
+
+    #endregion
+
+    #region Propulsion Methods
+    
+    public void OnPropulsionInputPressed()
+    {
+        if (!InRangePropulsor)
+        {
+            return;
+        }
+
+        _reachedApex = false;
+        _previousPosition = Vector3.zero;
+        _hasPressedPropulseInput = true;
+        
+        foreach (var effect in jumpEffects)
+        {
+            effect.ChargingPropulsion(this);
+        }
+    }
+
+    public void OnPropulsionInputReleased()
+    {
+        if (!_hasPressedPropulseInput)
+        {
+            return;
+        }
+
+        _hasPressedPropulseInput = false;
+        
+        foreach (var effect in jumpEffects)
+        {
+            effect.Propulse(this);
+        }
+    }
+
+    private void OrientPropulsion(Vector2 direction)
+    {
+        if (direction == Vector2.zero)
+        {
+            propulsionDirection.Value = Vector2.up;
+            return;
+        }
+        
+        propulsionDirection.Value = direction.normalized;
+    }
+
+    #endregion
+    
+    #region Player Behaviour Methods
+
+    public void OnEnterPropulsor(Propulsor propulsor)
+    {
+        InRangePropulsor = propulsor;
+    }
+
+    public void OnExitPropulsor(Propulsor propulsor)
+    {
+        InRangePropulsor = null;
+    }
+
+    #endregion
 }

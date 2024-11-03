@@ -11,6 +11,8 @@ public class RotationJumpEffect : JumpEffect
     [SerializeField] private int maxTurns = 3;
     [SerializeField] private FloatValue normalizedJumpStrength;
 
+    private Tween _rotationTween;
+
     private int GetTurnCount()
     {
         if(normalizedJumpStrength.Value < minNormalizedValueToRotate)
@@ -30,7 +32,7 @@ public class RotationJumpEffect : JumpEffect
     {
         int turns = GetTurnCount();
         Vector3 rotAxis = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-        Tween.Custom(0f, 360f * turns, duration, angle => jumper.rotationTransform.rotation = Quaternion.AngleAxis(angle, rotAxis), rotationEase);
+        _rotationTween = Tween.Custom(0f, 360f * turns, duration, angle => jumper.rotationTransform.rotation = Quaternion.AngleAxis(angle, rotAxis), rotationEase);
     }
 
     public override void ApexReached(PlayerJumper jumper)
@@ -39,10 +41,23 @@ public class RotationJumpEffect : JumpEffect
 
     public override void Landed(PlayerJumper jumper)
     {
-        
     }
 
     public override void OnFixedUpdate(PlayerJumper jumper)
     {
+    }
+
+    public override void ChargingPropulsion(PlayerJumper jumper)
+    {
+    }
+
+    public override void Propulse(PlayerJumper jumper)
+    {
+        if (_rotationTween.isAlive || !jumper.InRangePropulsor)
+        {
+            return;
+        }
+
+        Jump(jumper);
     }
 }

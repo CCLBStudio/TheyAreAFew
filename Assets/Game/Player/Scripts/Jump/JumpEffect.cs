@@ -7,4 +7,6 @@ public abstract class JumpEffect : ScriptableObject
     public abstract void ApexReached(PlayerJumper jumper);
     public abstract void Landed(PlayerJumper jumper);
     public abstract void OnFixedUpdate(PlayerJumper jumper);
+    public abstract void ChargingPropulsion(PlayerJumper jumper);
+    public abstract void Propulse(PlayerJumper jumper);
 }
