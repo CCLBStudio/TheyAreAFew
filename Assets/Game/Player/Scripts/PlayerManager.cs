@@ -1,14 +1,14 @@
+using ReaaliStudio.Systems.ScriptableValue;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public static List<PlayerFacade> Players = new();
+    [SerializeField] private PlayerFacadeListValue players;
 
     private void Awake()
     {
-        Players.Clear();
-        Players.Clear();
+        players.Clear();
     }
 }

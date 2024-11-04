@@ -1,9 +1,11 @@
+using ReaaliStudio.Systems.ScriptableValue;
 using UnityEngine;
 
 public class EnemyMover : MonoBehaviour, IEnemyBehaviour
 {
     public EnemyFacade Facade { get; set; }
 
+    [SerializeField] private PlayerFacadeListValue players;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform target;
     [SerializeField] private Vector2 minMaxSpeed = Vector2.one;
@@ -26,7 +28,7 @@ public class EnemyMover : MonoBehaviour, IEnemyBehaviour
 
     public void OnEnemyRequested()
     {
-        target = PlayerManager.Players[Random.Range(0, PlayerManager.Players.Count)].transform;
+        target = players.Value[Random.Range(0, players.Value.Count)].transform;
     }
 
     public void OnEnemyReleased()

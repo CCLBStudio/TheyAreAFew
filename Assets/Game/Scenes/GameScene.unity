@@ -19052,7 +19052,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 1.75
+  m_Radius: 2.25
 --- !u!1 &468767008
 GameObject:
   m_ObjectHideFlags: 0
@@ -40910,6 +40910,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1022840183}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1024550013
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1024550014}
+  - component: {fileID: 1024550015}
+  m_Layer: 0
+  m_Name: CameraMover
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1024550014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024550013}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1448095689}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1024550015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1024550013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5483404874ed26441a531cc3221d921a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTransform: {fileID: 330585546}
+  players: {fileID: 11400000, guid: 5ea5a3977e5e357409bb11b7c99e0880, type: 2}
+  moveSpeed: 5
+  distance: 0
 --- !u!1 &1027357621
 GameObject:
   m_ObjectHideFlags: 0
@@ -55958,6 +56006,7 @@ Transform:
   - {fileID: 1682630113}
   - {fileID: 423274397}
   - {fileID: 1530940028}
+  - {fileID: 1024550014}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1448095690
@@ -59047,6 +59096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b3984d813418bf45a093e0dcfab09e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  players: {fileID: 11400000, guid: 5ea5a3977e5e357409bb11b7c99e0880, type: 2}
 --- !u!1 &1539976084
 GameObject:
   m_ObjectHideFlags: 0
@@ -81930,6 +81980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa23588166644ed41b8315d99700090b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  players: {fileID: 11400000, guid: 5ea5a3977e5e357409bb11b7c99e0880, type: 2}
 --- !u!4 &7721354196139911705
 Transform:
   m_ObjectHideFlags: 0

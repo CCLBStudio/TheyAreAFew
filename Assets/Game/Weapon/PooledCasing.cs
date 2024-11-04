@@ -45,6 +45,7 @@ public class PooledCasing : MonoBehaviour, IScriptablePooledObject
     public void OnObjectCreated()
     {
         _initialScale = transform.localScale;
+        _timer = lifetime;
     }
 
     public void OnObjectRequested()
