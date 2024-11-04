@@ -9,5 +9,6 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         Players.Clear();
+        Players.Clear();
     }
 }

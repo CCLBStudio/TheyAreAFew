@@ -1,7 +1,4 @@
-using System;
-using Unity.Mathematics;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class RuntimeWeapon : MonoBehaviour
 {
@@ -11,20 +8,31 @@ public class RuntimeWeapon : MonoBehaviour
     [SerializeField] private Transform bulletOrigin;
     [SerializeField] private Transform muzzleOrigin;
     [SerializeField] private Transform casingOrigin;
+    [SerializeField] private Animator weaponAnimator;
 
     [SerializeField] private Vector3 casingEjectionDirection = new Vector3(-1f, 2f, 0f).normalized;
 
     private Rigidbody2D _playerRb;
     private PlayerAttacker _attacker;
-    
+    private bool _init;
+    private static readonly int Shooting = Animator.StringToHash("Shooting");
+
     public void Initialize(PlayerAttacker attacker)
     {
+        weaponAnimator = GetComponent<Animator>();
         _playerRb = attacker.PlayerRb;
         _attacker = attacker;
+
+        _init = true;
     }
 
     public void Shoot(Vector2 direction)
     {
+        if (!_init)
+        {
+            return;
+        }
+        
         SpawnBullet(direction);
         SpawnMuzzle();
         ApplyKnockbackForce(direction);
@@ -45,9 +53,11 @@ public class RuntimeWeapon : MonoBehaviour
     private void SpawnMuzzle()
     {
         var muzzle = weapon.MuzzlePool.RequestObjectAs<AutoReleasePooledObject>();
-        muzzle.transform.SetParent(muzzleOrigin);
-        muzzle.transform.localPosition = Vector3.zero;
-        muzzle.transform.localRotation = quaternion.identity;
+        Transform muzzleTransform = muzzle.transform;
+        
+        muzzleTransform.SetParent(muzzleOrigin);
+        muzzleTransform.localPosition = Vector3.zero;
+        muzzleTransform.localRotation = Quaternion.identity;
     }
 
     private void ApplyKnockbackForce(Vector2 shootingDirection)
@@ -66,6 +76,16 @@ public class RuntimeWeapon : MonoBehaviour
         
         casing.Rigidbody.AddForce(dir * weapon.CasingEjectionForce, ForceMode.Impulse);
         casing.Rigidbody.AddTorque(new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * weapon.CasingEjectionForce, ForceMode.Impulse);
+    }
+
+    public void StartShooting()
+    {
+        weaponAnimator.SetBool(Shooting, true);
+    }
+    
+    public void StopShooting()
+    {
+        weaponAnimator.SetBool(Shooting, false);
     }
     
     private Vector2 ApplyRotation(Vector2 direction, float angle)
@@ -92,10 +112,5 @@ public class RuntimeWeapon : MonoBehaviour
     private float GetAttackSpeed()
     {
         return weapon.AttackSpeed;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawLine(casingOrigin.position, casingOrigin.position + casingEjectionDirection);
     }
 }

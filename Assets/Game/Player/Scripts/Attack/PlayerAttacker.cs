@@ -14,6 +14,7 @@ public class PlayerAttacker : MonoBehaviour, IPlayerBehaviour
     [SerializeField] private Rigidbody2D playerRb;
     
     private bool _isShooting;
+    private bool _startShooting;
     private float _shootingTimer;
     private Vector2 _shootingDirection;
     private RuntimeWeapon _currentWeapon;
@@ -50,7 +51,34 @@ public class PlayerAttacker : MonoBehaviour, IPlayerBehaviour
     
     private void OnAim(Vector2 direction)
     {
-        _isShooting = direction != Vector2.zero;
+        bool shooting = direction != Vector2.zero;
+
+        switch (_isShooting)
+        {
+            case false when shooting:
+                _currentWeapon.StartShooting();
+                break;
+            
+            case true when !shooting:
+                _currentWeapon.StopShooting();
+                break;
+        }
+
+        _isShooting = shooting;
+        
+        // _isShooting = direction != Vector2.zero;
+        //
+        // if (_isShooting && !_startShooting)
+        // {
+        //     _startShooting = true;
+        //     _currentWeapon.StartShooting();
+        // }
+        // else if (!_isShooting && _startShooting)
+        // {
+        //     _startShooting = false;
+        //     _currentWeapon.StopShooting();
+        // }
+        
         _shootingDirection = direction.normalized;
     }
 
