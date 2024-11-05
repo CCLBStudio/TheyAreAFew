@@ -1,5 +1,7 @@
+using System;
 using ReaaliStudio.Systems.ScriptableValue;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyMover : MonoBehaviour, IEnemyBehaviour
 {
@@ -9,6 +11,7 @@ public class EnemyMover : MonoBehaviour, IEnemyBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform target;
     [SerializeField] private Vector2 minMaxSpeed = Vector2.one;
+    [SerializeField] private float heightDivider = 2f;
 
     private float _speed;
     private Vector2 _direction;
@@ -16,9 +19,10 @@ public class EnemyMover : MonoBehaviour, IEnemyBehaviour
     protected virtual void Move()
     {
         _direction = target.position - transform.position;
-        _direction.y = 0f;
+        _direction.y /= heightDivider;
         
-        rb.AddForceX(_direction.normalized.x * _speed);
+        rb.AddForce(_direction.normalized * _speed);
+        Debug.DrawLine(transform.position, (transform.position +(Vector3)_direction.normalized) * _speed);
     }
     
     public void OnEnemyCreated()
@@ -43,5 +47,11 @@ public class EnemyMover : MonoBehaviour, IEnemyBehaviour
     public void OnBulletHit(RuntimeBullet bullet)
     {
         
+    }
+
+    private void OnDrawGizmos()
+    {
+        var position = transform.position;
+        //Gizmos.DrawLine(position, (position + (Vector3)_direction).normalized * _speed);
     }
 }

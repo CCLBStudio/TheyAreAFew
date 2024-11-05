@@ -17020,7 +17020,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423274396}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2427f78124f6fa428699b0451ec0dd8, type: 3}
   m_Name: 
@@ -17029,7 +17029,7 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1233549227}
   - {fileID: 868203219}
-  timeBetweenSpawns: 0.1
+  timeBetweenSpawns: 0.25
 --- !u!1 &425179187
 GameObject:
   m_ObjectHideFlags: 0
