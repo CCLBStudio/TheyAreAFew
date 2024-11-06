@@ -2,7 +2,7 @@ using CCLBStudio.ScriptablePooling;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(menuName = "They Are Many/Weapon/Wepon Scriptable", fileName = "NewWeapon")]
+[CreateAssetMenu(menuName = "They Are Many/Weapon/Weapon Scriptable", fileName = "NewWeapon")]
 public class ScriptableWeapon : ScriptableObject
 {
     public float Damages => damages;
@@ -14,7 +14,6 @@ public class ScriptableWeapon : ScriptableObject
     public ScriptablePool CasingPool => casingPool;
     public ScriptablePool MuzzlePool => muzzlePool;
     public ScriptablePool GroundImpactPool => groundImpactPool;
-    public GameObject Casing => casing;
     public float CasingEjectionForce => casingEjectionForce;
     public float CasingDispersion => casingDispersion;
     public float PlayerKnockbackForce => playerKnockbackForce;
@@ -24,8 +23,6 @@ public class ScriptableWeapon : ScriptableObject
     [Header("Weapon Visuals")]
     [Tooltip("Weapon model")]
     [SerializeField] private RuntimeWeapon weaponPrefab;
-    [Tooltip("Casing model")]
-    [SerializeField] private GameObject casing;
     [SerializeField] private ScriptablePool bulletPool;
     [SerializeField] private ScriptablePool casingPool;
     [SerializeField] private ScriptablePool muzzlePool;

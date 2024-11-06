@@ -17020,7 +17020,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423274396}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2427f78124f6fa428699b0451ec0dd8, type: 3}
   m_Name: 
@@ -81900,6 +81900,7 @@ GameObject:
   - component: {fileID: 7343448206477088490}
   - component: {fileID: 7166582280015430648}
   - component: {fileID: 7343448206477088491}
+  - component: {fileID: 7343448206477088493}
   - component: {fileID: 7343448206477088489}
   m_Layer: 7
   m_Name: Player
@@ -81981,6 +81982,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: {fileID: 11400000, guid: 5ea5a3977e5e357409bb11b7c99e0880, type: 2}
+--- !u!114 &7343448206477088493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7343448206477088488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759caf86c50e9ff489c8252a12029893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputReader: {fileID: 11400000, guid: d3ee40d4cce53df4cb81b7af6cfaf165, type: 2}
+  startAbility: {fileID: 0}
+  abilityHolder: {fileID: 6031315079815213434}
+  playerRb: {fileID: 7343448206477088489}
 --- !u!4 &7721354196139911705
 Transform:
   m_ObjectHideFlags: 0

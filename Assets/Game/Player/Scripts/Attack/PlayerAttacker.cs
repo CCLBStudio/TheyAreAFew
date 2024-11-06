@@ -65,20 +65,6 @@ public class PlayerAttacker : MonoBehaviour, IPlayerBehaviour
         }
 
         _isShooting = shooting;
-        
-        // _isShooting = direction != Vector2.zero;
-        //
-        // if (_isShooting && !_startShooting)
-        // {
-        //     _startShooting = true;
-        //     _currentWeapon.StartShooting();
-        // }
-        // else if (!_isShooting && _startShooting)
-        // {
-        //     _startShooting = false;
-        //     _currentWeapon.StopShooting();
-        // }
-        
         _shootingDirection = direction.normalized;
     }
 

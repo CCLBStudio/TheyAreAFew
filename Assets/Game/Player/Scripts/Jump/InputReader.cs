@@ -15,9 +15,8 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
     public event UnityAction JumpReleaseEvent;
     public event UnityAction PropulsionBeginEvent;
     public event UnityAction PropulsionReleaseEvent;
-    
-    private event UnityAction OnValidateEvent;
-    private event UnityAction OnCancelEvent;
+    public event UnityAction PrimaryAbilityPressEvent;
+    public event UnityAction PrimaryAbilityReleaseEvent;
 
     [NonSerialized] private PlayerControls _playerInputs;
 
@@ -123,20 +122,15 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
         }
     }
 
-
-    public void OnAccept(InputAction.CallbackContext context)
+    public void OnPrimaryAbility(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            OnValidateEvent?.Invoke();
+            PrimaryAbilityPressEvent?.Invoke();
         }
-    }
-
-    public void OnCancel(InputAction.CallbackContext context)
-    {
-        if (context.phase == InputActionPhase.Performed)
+        else if (context.phase == InputActionPhase.Canceled)
         {
-            OnCancelEvent?.Invoke();
+            PrimaryAbilityReleaseEvent?.Invoke();
         }
     }
 
@@ -158,27 +152,4 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
     {
         inputListeningRequested = false;
     }
-
-    public void AddValidateAction(UnityAction action)
-    {
-        OnValidateEvent = null;
-        OnValidateEvent += action;
-    }
-    
-    public void AddCancelAction(UnityAction action)
-    {
-        OnCancelEvent = null;
-        OnCancelEvent += action;
-    }
-
-    public void ClearValidateEvent()
-    {
-        OnValidateEvent = null;
-    }
-    
-    public void ClearCancelEvent()
-    {
-        OnCancelEvent = null;
-    }
-    
 }

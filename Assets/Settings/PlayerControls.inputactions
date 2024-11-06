@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PrimaryAbility",
+                    "type": "Button",
+                    "id": "abba9376-ab85-40ac-a999-5f729047b985",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -235,9 +244,20 @@
                     "id": "30edebfa-5d0c-4e03-9bff-326721397123",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
-                    "processors": "AxisDeadzone(min=0.5)",
+                    "processors": "AxisDeadzone(min=0.4)",
                     "groups": ";Gamepad",
                     "action": "Propulse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97757ad2-c373-464b-a966-8299180cb6cb",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "PrimaryAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
