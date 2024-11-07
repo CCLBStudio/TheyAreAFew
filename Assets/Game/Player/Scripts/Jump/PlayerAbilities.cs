@@ -19,8 +19,8 @@ public class PlayerAbilities : MonoBehaviour, IPlayerBehaviour
         
         inputReader.PrimaryAbilityPressEvent += _currentAbility.OnInputPressed;
         inputReader.PrimaryAbilityReleaseEvent += _currentAbility.OnInputReleased;
+        inputReader.AimEvent += _currentAbility.OnAim;
     }
-
 
     public void OnEnterPropulsor(Propulsor propulsor)
     {
