@@ -7,6 +7,7 @@ public class RuntimeBullet : MonoBehaviour, IScriptablePooledObject, IDamageDeal
     public Vector2 Direction { get; set; }
 
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Collider2D bulletCollider;
 
     private bool _isAlive;
     private bool _isInit;
@@ -39,7 +40,7 @@ public class RuntimeBullet : MonoBehaviour, IScriptablePooledObject, IDamageDeal
 
         _isAlive = false;
         
-        var interactors = other.gameObject.GetComponents<IDamageInteractor>();
+        var interactors = other.gameObject.GetComponents<IDamageable>();
         if (interactors.Length <= 0)
         {
             var effect = _currentWeapon.GroundImpactPool.RequestObjectAs<PooledParticleSystem>();
@@ -64,14 +65,29 @@ public class RuntimeBullet : MonoBehaviour, IScriptablePooledObject, IDamageDeal
         _isInit = true;
     }
 
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+
+    public DamageType GetDamageType()
+    {
+        return DamageType.Impact;
+    }
+
     public float GetDamages()
     {
         return _currentWeapon.Damages;
     }
 
-    public void ApplyKnockback(IDamageable target)
+    public float GetKnockbackForce()
     {
-        
+        return _currentWeapon.DamageableKnockbackForce;
+    }
+
+    public Collider2D GetCollider()
+    {
+        return bulletCollider;
     }
 
     public void OnObjectCreated()

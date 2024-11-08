@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour, IEnemyBehaviour, IDamageable
+public class EnemyHealth : MonoBehaviour, IEnemyBehaviour
 {
     public EnemyFacade Facade { get; set; }
 
@@ -26,8 +26,13 @@ public class EnemyHealth : MonoBehaviour, IEnemyBehaviour, IDamageable
     {
     }
 
-    public void GetHit(IDamageDealer damageDealer)
+    public void ApplyDamagesFromDealer(IDamageDealer damageDealer)
     {
+        if (_currentHealth <= 0f)
+        {
+            return;
+        }
+        
         _currentHealth -= damageDealer.GetDamages();
         if (_currentHealth <= 0f)
         {

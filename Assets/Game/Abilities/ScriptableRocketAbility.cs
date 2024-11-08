@@ -11,6 +11,7 @@ public class ScriptableRocketAbility : ScriptableAbility
     public float Lifetime => lifetime;
     public ScriptablePool ExplosionPool => explosionPool;
     public float ExplosionRange => explosionRange;
+    public float KnockbackForce => knockbackForce;
 
     [SerializeField] [Min(.1f)] private float travelSpeed;
     [SerializeField] [Min(.1f)] private float accelerationTime = .5f;
@@ -18,6 +19,7 @@ public class ScriptableRocketAbility : ScriptableAbility
     [SerializeField] private Ease accelerationEase = Ease.InExpo;
     [SerializeField] private ScriptablePool explosionPool;
     [SerializeField] private float explosionRange = 15f;
+    [SerializeField] [Min(0f)] private float knockbackForce = 15f;
 
     public override RuntimeAbility Equip(PlayerAbilities playerAbilities)
     {

@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 719031482211706998}
+  bulletCollider: {fileID: 3548811422351726523}
 --- !u!50 &719031482211706998
 Rigidbody2D:
   serializedVersion: 5

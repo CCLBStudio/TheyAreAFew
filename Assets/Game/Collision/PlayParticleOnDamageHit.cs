@@ -1,7 +1,7 @@
 using CCLBStudio.ScriptablePooling;
 using UnityEngine;
 
-public class PlayParticleOnDamageHit : MonoBehaviour, IDamageInteractor
+public class PlayParticleOnDamageHit : MonoBehaviour, IDamageable
 {
     [SerializeField] private ScriptablePool effectPool;
     [SerializeField] private bool orientTowardsBullet = true;
@@ -20,13 +20,13 @@ public class PlayParticleOnDamageHit : MonoBehaviour, IDamageInteractor
 
     public void GetHit(IDamageDealer damageOrigin)
     {
-        if (damageOrigin is not RuntimeBullet b)
+        if (damageOrigin.GetDamageType() != DamageType.Impact)
         {
             return;
         }
         
         var effect = effectPool.RequestObjectAs<PooledParticleSystem>();
-        Vector3 bulletPos = b.transform.position;
+        Vector3 bulletPos = damageOrigin.GetPosition();
         effect.transform.position = _collider.ClosestPoint(bulletPos);
 
         if (orientTowardsBullet)
@@ -37,5 +37,10 @@ public class PlayParticleOnDamageHit : MonoBehaviour, IDamageInteractor
         }
         
         effect.Play();
+    }
+
+    public Rigidbody2D GetRigidbody()
+    {
+        return null;
     }
 }

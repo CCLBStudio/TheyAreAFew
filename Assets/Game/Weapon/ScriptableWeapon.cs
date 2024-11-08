@@ -18,6 +18,7 @@ public class ScriptableWeapon : ScriptableObject
     public float CasingDispersion => casingDispersion;
     public float PlayerKnockbackForce => playerKnockbackForce;
     public float PlayerInAirKnockbackForceXMultiplier => playerInAirKnockbackForceXMultiplier;
+    public float DamageableKnockbackForce => damageableKnockbackForce;
     public float BulletLifetime => bulletLifetime;
 
     [Header("Weapon Visuals")]
@@ -38,6 +39,7 @@ public class ScriptableWeapon : ScriptableObject
     [SerializeField] private float playerKnockbackForce = 1f;
     [Tooltip("When applying knockback in air, multiply the X axis of the knockback direction by this value.")]
     [SerializeField] private float playerInAirKnockbackForceXMultiplier = 5f;
+    [SerializeField] private float damageableKnockbackForce;
     
     [Header("Bullet Stats")]
     [Tooltip("The bullet travelling speed.")]
