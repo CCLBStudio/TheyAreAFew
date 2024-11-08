@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Rocket-ScriptableAbility
   m_EditorClassIdentifier: 
   cooldown: 0
-  strength: 10
+  strength: 100
   abilityPrefab: {fileID: 1454416333903646861, guid: a1076854dfa470f4691d335a910ad914,
     type: 3}
   visualPool: {fileID: 11400000, guid: 3cecf330c6d284f41b90ef3e9fab1111, type: 2}
   travelSpeed: 50
   accelerationTime: 0.5
+  lifetime: 0
   accelerationEase: 17
+  explosionPool: {fileID: 11400000, guid: 646ca0ebbe4474b418c1106a5b393d97, type: 2}
+  explosionRange: 15

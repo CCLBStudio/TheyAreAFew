@@ -43,15 +43,4 @@ public class EnemyMover : MonoBehaviour, IEnemyBehaviour
     {
         Move();
     }
-
-    public void OnBulletHit(RuntimeBullet bullet)
-    {
-        
-    }
-
-    private void OnDrawGizmos()
-    {
-        var position = transform.position;
-        //Gizmos.DrawLine(position, (position + (Vector3)_direction).normalized * _speed);
-    }
 }

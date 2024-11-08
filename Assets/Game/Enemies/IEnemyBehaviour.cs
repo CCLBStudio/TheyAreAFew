@@ -5,5 +5,4 @@ public interface IEnemyBehaviour
     public void OnEnemyRequested();
     public void OnEnemyReleased();
     public void OnFixedUpdated();
-    public void OnBulletHit(RuntimeBullet bullet);
 }

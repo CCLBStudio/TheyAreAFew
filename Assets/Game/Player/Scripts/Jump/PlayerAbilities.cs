@@ -22,6 +22,14 @@ public class PlayerAbilities : MonoBehaviour, IPlayerBehaviour
         inputReader.AimEvent += _currentAbility.OnAim;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _currentAbility.OnInputPressed();
+        }
+    }
+
     public void OnEnterPropulsor(Propulsor propulsor)
     {
     }

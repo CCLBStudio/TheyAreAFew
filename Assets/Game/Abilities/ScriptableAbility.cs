@@ -16,7 +16,7 @@ public abstract class ScriptableAbility : ScriptableObject
     [SerializeField] private RuntimeAbility abilityPrefab;
     [SerializeField] private ScriptablePool visualPool;
 
-    public RuntimeAbility Equip(PlayerAbilities playerAbilities)
+    public virtual RuntimeAbility Equip(PlayerAbilities playerAbilities)
     {
         var ability = Instantiate(abilityPrefab.gameObject, playerAbilities.AbilityHolder).GetComponent<RuntimeAbility>();
         

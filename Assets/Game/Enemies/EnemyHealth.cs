@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour, IEnemyBehaviour
+public class EnemyHealth : MonoBehaviour, IEnemyBehaviour, IDamageable
 {
     public EnemyFacade Facade { get; set; }
 
@@ -26,9 +26,9 @@ public class EnemyHealth : MonoBehaviour, IEnemyBehaviour
     {
     }
 
-    public void OnBulletHit(RuntimeBullet bullet)
+    public void GetHit(IDamageDealer damageDealer)
     {
-        _currentHealth -= bullet.GetDamages();
+        _currentHealth -= damageDealer.GetDamages();
         if (_currentHealth <= 0f)
         {
             Facade.ReleaseSelf();

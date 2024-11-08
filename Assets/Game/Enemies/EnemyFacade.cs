@@ -20,18 +20,6 @@ public class EnemyFacade : MonoBehaviour, IScriptablePooledObject
 
     #endregion
 
-    #region Interaction Methods
-
-    public void NotifyHit(RuntimeBullet bullet)
-    {
-        foreach (var b in _behaviours)
-        {
-            b.OnBulletHit(bullet);
-        }
-    }
-
-    #endregion
-
     #region Behaviour Methods
 
     public void ReleaseSelf()
