@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 2114472549662428182, guid: 38a221c4887ac3743be4e849d329a2f6,
     type: 3}
-  casing: {fileID: 7084930153273211492, guid: bf8ad436166f67347a7f40bbbf12177c, type: 3}
   bulletPool: {fileID: 11400000, guid: 9908f6fa45d618648ada32f501132f87, type: 2}
   casingPool: {fileID: 11400000, guid: a75d27a8900218249a08b04d070e8a3e, type: 2}
   muzzlePool: {fileID: 11400000, guid: 60e0cfd0eb63bbf4cae0896f215f04bc, type: 2}
   groundImpactPool: {fileID: 11400000, guid: 622402ee73723eb42b15638002577c0b, type: 2}
   damages: 50
   attackSpeed: 20
-  playerKnockbackForce: 1
-  playerInAirKnockbackForceXMultiplier: 5
+  playerKnockbackForce: 5
+  playerInAirKnockbackForceXMultiplier: 1
+  damageableKnockbackForce: 0
   bulletSpeed: 70
   bulletLifetime: 1.5
   dispersion: 5

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerMover : MonoBehaviour, IPlayerBehaviour
 {
@@ -6,7 +7,8 @@ public class PlayerMover : MonoBehaviour, IPlayerBehaviour
     public PlayerFacade Facade { get; set; }
     
     [SerializeField] private InputReader inputReader;
-    [SerializeField] private float moveSpeed;
+    [SerializeField] private float groundedMoveSpeed = 250f;
+    [SerializeField] private float inAirHorizontalVelocityTarget = 10f;
     [SerializeField] private PlayerJumper jumper;
     [SerializeField] private Rigidbody2D rb;
 
@@ -39,10 +41,17 @@ public class PlayerMover : MonoBehaviour, IPlayerBehaviour
 
     private void Move()
     {
-        rb.AddForceX(_currentDirection.x * moveSpeed);
+        rb.AddForceX(_currentDirection.x * groundedMoveSpeed);
+        if (!jumper.Grounded)
+        {
+            float sign = Mathf.Sign(rb.linearVelocityX);
+
+            float absVel = Mathf.Clamp((Mathf.Abs(rb.linearVelocityX) - inAirHorizontalVelocityTarget), 0f, 1f);
+            rb.AddForceX(-sign * absVel * groundedMoveSpeed);
+        }
     }
     
-    #region Player Behaviour Methods
+    #region Propulsion Methods
     
     public void OnEnterPropulsor(Propulsor propulsor)
     {
@@ -54,12 +63,12 @@ public class PlayerMover : MonoBehaviour, IPlayerBehaviour
         _propulsorInRange = false;
     }
 
-    public void OnPropulsionInputPressed()
+    private void OnPropulsionInputPressed()
     {
         _chargingPropulsion = _propulsorInRange;
     }
 
-    public void OnPropulsionInputReleased()
+    private void OnPropulsionInputReleased()
     {
         _chargingPropulsion = false;
     }

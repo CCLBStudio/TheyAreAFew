@@ -65,6 +65,6 @@ public class AddForceJumpEffect : JumpEffect
         }
 
         _propulsionInputReleased = true;
-        _propulsionDir = propulsionDirection.Value;
+        _propulsionDir = propulsionDirection.Value.normalized;
     }
 }

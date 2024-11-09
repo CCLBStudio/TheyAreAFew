@@ -67,24 +67,4 @@ public class PlayerAttacker : MonoBehaviour, IPlayerBehaviour
         _isShooting = shooting;
         _shootingDirection = direction.normalized;
     }
-
-    #region Player Behaviour Methods
-
-    public void OnEnterPropulsor(Propulsor propulsor)
-    {
-    }
-
-    public void OnExitPropulsor(Propulsor propulsor)
-    {
-    }
-
-    public void OnPropulsionInputPressed()
-    {
-    }
-
-    public void OnPropulsionInputReleased()
-    {
-    }
-
-    #endregion
 }

@@ -18,7 +18,6 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
     [SerializeField] private InputReader inputReader;
     [SerializeField] private FloatValue normalizedJumpStrength;
     [SerializeField] private FloatValue pressTimeForMaxJump;
-    [SerializeField] private FloatValue groundedGravityScale;
     [SerializeField] private Vector2Value propulsionDirection;
     [SerializeField] private float inputBufferTime = .15f;
     [SerializeField] private List<JumpEffect> jumpEffects;
@@ -105,7 +104,6 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
         {
             _isJumping = false;
             _grounded = true;
-            movementRb.gravityScale = groundedGravityScale.Value;
 
             foreach (var effect in jumpEffects)
             {
@@ -173,14 +171,23 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
 
     #region Propulsion Methods
     
-    public void OnPropulsionInputPressed()
+    public void OnEnterPropulsor(Propulsor propulsor)
+    {
+        InRangePropulsor = propulsor;
+    }
+
+    public void OnExitPropulsor(Propulsor propulsor)
+    {
+        InRangePropulsor = null;
+    }
+    
+    private void OnPropulsionInputPressed()
     {
         if (!InRangePropulsor)
         {
             return;
         }
 
-        _reachedApex = false;
         _previousPosition = Vector3.zero;
         _hasPressedPropulseInput = true;
         
@@ -190,7 +197,7 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
         }
     }
 
-    public void OnPropulsionInputReleased()
+    private void OnPropulsionInputReleased()
     {
         if (!_hasPressedPropulseInput)
         {
@@ -198,6 +205,8 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
         }
 
         _hasPressedPropulseInput = false;
+        _reachedApex = false;
+        _previousPosition = Vector3.zero;
         
         foreach (var effect in jumpEffects)
         {
@@ -214,20 +223,6 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
         }
         
         propulsionDirection.Value = direction.normalized;
-    }
-
-    #endregion
-    
-    #region Player Behaviour Methods
-
-    public void OnEnterPropulsor(Propulsor propulsor)
-    {
-        InRangePropulsor = propulsor;
-    }
-
-    public void OnExitPropulsor(Propulsor propulsor)
-    {
-        InRangePropulsor = null;
     }
 
     #endregion

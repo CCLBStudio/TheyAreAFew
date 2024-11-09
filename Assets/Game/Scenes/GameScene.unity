@@ -17020,7 +17020,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423274396}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2427f78124f6fa428699b0451ec0dd8, type: 3}
   m_Name: 
@@ -56021,6 +56021,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7622dccd23f5ff449b8bc38fe6813e7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetFps: 144
 --- !u!1 &1448352892
 GameObject:
   m_ObjectHideFlags: 0
@@ -81830,7 +81831,7 @@ Transform:
   m_GameObject: {fileID: 7343448206477088488}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -81874,14 +81875,12 @@ MonoBehaviour:
     type: 2}
   pressTimeForMaxJump: {fileID: 11400000, guid: 7f0d98a8873c61c47addb3e832ee7c9e,
     type: 2}
-  groundedGravityScale: {fileID: 11400000, guid: 4828424fa736b1c4f94c087f8338142c,
-    type: 2}
   propulsionDirection: {fileID: 11400000, guid: 61f37472a4ff1a04c8adda01e8d748c2,
     type: 2}
   inputBufferTime: 0.25
   jumpEffects:
   - {fileID: 11400000, guid: 3cc8098650378ac4caf8c5d0072d7426, type: 2}
-  - {fileID: 11400000, guid: 9ef57c8bb97eb864087b45d17656c182, type: 2}
+  - {fileID: 11400000, guid: ea96aeccf200f594c9c9254f9f1981f7, type: 2}
   - {fileID: 11400000, guid: 62995177785c9794d814654a0f7420c1, type: 2}
   - {fileID: 11400000, guid: 8ab392d1149aa4a45954e09d9bec04f2, type: 2}
   groundLayers:
@@ -81901,6 +81900,7 @@ GameObject:
   - component: {fileID: 7166582280015430648}
   - component: {fileID: 7343448206477088491}
   - component: {fileID: 7343448206477088493}
+  - component: {fileID: 7343448206477088494}
   - component: {fileID: 7343448206477088489}
   m_Layer: 7
   m_Name: Player
@@ -81921,10 +81921,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 15
+  m_Mass: 2
+  m_LinearDamping: 3
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 10
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -81932,7 +81932,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -81949,7 +81949,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputReader: {fileID: 11400000, guid: d3ee40d4cce53df4cb81b7af6cfaf165, type: 2}
-  moveSpeed: 300
+  groundedMoveSpeed: 250
+  inAirHorizontalVelocityTarget: 15
   jumper: {fileID: 7166582280015430648}
   rb: {fileID: 7343448206477088489}
 --- !u!114 &7343448206477088491
@@ -81998,6 +81999,22 @@ MonoBehaviour:
   startAbility: {fileID: 11400000, guid: 5bb0a8c7108ffc84eb69a4e78cd1cd3b, type: 2}
   abilityHolder: {fileID: 1663214138}
   playerRb: {fileID: 7343448206477088489}
+--- !u!114 &7343448206477088494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7343448206477088488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82045d73b0b64e744aed78727fc82afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxAbsoluteFallingVelocity: 10
+  maximumForceMultiplicator: 4
+  rb: {fileID: 7343448206477088489}
+  currentVelocity: {x: 0, y: 0}
 --- !u!4 &7721354196139911705
 Transform:
   m_ObjectHideFlags: 0
@@ -82117,6 +82134,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 7343448206477088492}
+  onEnterPropulsorRange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7343448206477088490}
+        m_TargetAssemblyTypeName: PlayerMover, Assembly-CSharp
+        m_MethodName: OnEnterPropulsor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7166582280015430648}
+        m_TargetAssemblyTypeName: PlayerJumper, Assembly-CSharp
+        m_MethodName: OnEnterPropulsor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onExitPropulsorRange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7343448206477088490}
+        m_TargetAssemblyTypeName: PlayerMover, Assembly-CSharp
+        m_MethodName: OnExitPropulsor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7166582280015430648}
+        m_TargetAssemblyTypeName: PlayerJumper, Assembly-CSharp
+        m_MethodName: OnExitPropulsor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
