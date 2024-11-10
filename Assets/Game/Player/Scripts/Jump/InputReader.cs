@@ -1,13 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 
 [CreateAssetMenu(fileName = "NewInputReader", menuName = "CCLBStudio/Inputs/InputReader")]
-public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISerializationCallbackReceiver
+public class InputReader : ScriptableObject, PlayerControls.IPlayerActions
 {
-    [SerializeField] private bool inputListeningRequested;
     [SerializeField] private bool autoInit = true;
+    [SerializeField] private PlayerId playerId = PlayerId.Player1;
     
     public event UnityAction<Vector2> MoveEvent;
     public event UnityAction<Vector2> AimEvent;
@@ -19,9 +22,17 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
     public event UnityAction PrimaryAbilityReleaseEvent;
 
     [NonSerialized] private PlayerControls _playerInputs;
+    [NonSerialized] private InputDevice _assignedDevice;
+
+    private static bool _globalInitPerformed = false;
+    private static Dictionary<PlayerId, InputDevice> _playerDevices;
+    
+    private enum PlayerId {Player1 = 0, Player2 = 1, Player3 = 2, Player4 = 3}
 
     private void OnEnable()
     {
+        Clear();
+        
         if (autoInit)
         {
             Init();
@@ -30,11 +41,7 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
 
     private void OnDisable()
     {
-        if (_playerInputs != null)
-        {
-            _playerInputs.Player.Disable();
-            _playerInputs.UI.Disable();
-        }
+        Clear();
     }
 
     public void Init()
@@ -44,13 +51,131 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
             return;
         }
         
+        GlobalInit();
+
+        _assignedDevice = _playerDevices[playerId];
         _playerInputs = new PlayerControls();
         _playerInputs.Player.SetCallbacks(this);
-        _playerInputs.devices = null;
-        inputListeningRequested = true;
+        _playerInputs.devices = new ReadOnlyArray<InputDevice>();
+        
+        InputSystem.onDeviceChange += OnDeviceChange;
+        CheckForPlayerDevice();
 
         _playerInputs.Player.Enable();
         _playerInputs.UI.Disable();
+    }
+
+    private static void GlobalInit()
+    {
+        if (_globalInitPerformed)
+        {
+            return;
+        }
+
+        _globalInitPerformed = true;
+        _playerDevices = new Dictionary<PlayerId, InputDevice>(4);
+
+        foreach (PlayerId id in Enum.GetValues(typeof(PlayerId)))
+        {
+            _playerDevices[id] = null;
+        }
+
+        for (int i = 0; i < Gamepad.all.Count; i++)
+        {
+            if (i >= 4)
+            {
+                break;
+            }
+
+            PlayerId id = (PlayerId)i;
+            _playerDevices[id] = Gamepad.all[i];
+        }
+    }
+
+    public void Clear()
+    {
+        if (_playerInputs == null)
+        {
+            return;
+        }
+        
+        DisableAll();
+        InputSystem.onDeviceChange -= OnDeviceChange;
+    }
+
+    private void OnDeviceChange(InputDevice device, InputDeviceChange change)
+    {
+        if (device is not Gamepad gamepad)
+        {
+            return;
+        }
+
+        if (_assignedDevice != null && _assignedDevice != device)
+        {
+            return;
+        }
+        
+        Debug.Log($"Gamepad named {gamepad.displayName} with id {gamepad.GetHashCode()} changed state to : {change}.");
+        
+        switch (change)
+        {
+            case InputDeviceChange.Added:
+                if (IsNewDevice(gamepad) && _assignedDevice == null)
+                {
+                    SetDevice(gamepad);
+                }
+                break;
+
+            case InputDeviceChange.Removed:
+                break;
+
+            case InputDeviceChange.Disconnected:
+                break;
+
+            case InputDeviceChange.Reconnected:
+                if (_assignedDevice == gamepad)
+                {
+                    SetDevice(gamepad);
+                }
+                break;
+            
+            case InputDeviceChange.Enabled:
+                break;
+            
+            case InputDeviceChange.Disabled:
+                break;
+            
+            case InputDeviceChange.UsageChanged:
+                break;
+            
+            case InputDeviceChange.ConfigurationChanged:
+                break;
+            
+            case InputDeviceChange.SoftReset:
+                break;
+            
+            case InputDeviceChange.HardReset:
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException(nameof(change), change, null);
+        }
+    }
+
+    private bool IsNewDevice(InputDevice device)
+    {
+        return _playerDevices.Values.All(playerDevice => device != playerDevice);
+    }
+
+    private void CheckForPlayerDevice()
+    {
+        if (_playerDevices[playerId] == null)
+        {
+            Debug.LogError($"There is no gamepad available for {playerId}");
+            return;
+        }
+        
+        SetDevice(_playerDevices[playerId]);
     }
     
     public void SetDevice(InputDevice device)
@@ -61,12 +186,7 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
         }
         
         _playerInputs.devices = new[] {device};
-        inputListeningRequested = false;
-    }
-
-    public bool IsInputListeningRequested()
-    {
-        return inputListeningRequested;
+        _assignedDevice = device;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -143,13 +263,20 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions, ISer
     {
         _playerInputs.Player.Disable();
     }
-
-    public void OnBeforeSerialize()
+    
+    public void EnableUiInputs()
     {
+        _playerInputs.UI.Enable();
     }
 
-    public void OnAfterDeserialize()
+    public void DisableUiInputs()
     {
-        inputListeningRequested = false;
+        _playerInputs.UI.Disable();
+    }
+
+    public void DisableAll()
+    {
+        DisablePlayerInputs();
+        DisableUiInputs();
     }
 }

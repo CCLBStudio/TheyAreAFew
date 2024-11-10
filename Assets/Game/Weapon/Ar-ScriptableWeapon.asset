@@ -26,5 +26,5 @@ MonoBehaviour:
   bulletSpeed: 70
   bulletLifetime: 1.5
   dispersion: 5
-  casingEjectionForce: 3
-  casingDispersion: 25
+  casingEjectionForce: 2.8
+  casingDispersion: 10

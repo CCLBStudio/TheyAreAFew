@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed30c3d5e590b948ae0ec93a95c4477, type: 3}
+  m_Name: AddForceJumpEffect-Player2
+  m_EditorClassIdentifier: 
+  maxJumpForce: 210
+  propulsionForce: 180
+  normalizedJumpStrength: {fileID: 11400000, guid: 53661502629f04f49af181bb5d3cdee4,
+    type: 2}
+  propulsionDirection: {fileID: 11400000, guid: 81dee3763f4236341a57a78e2362039c,
+    type: 2}

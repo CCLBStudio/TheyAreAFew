@@ -50,13 +50,13 @@ public class PooledCasing : MonoBehaviour, IScriptablePooledObject
 
     public void OnObjectRequested()
     {
-    }
-
-    public void OnObjectReleased()
-    {
         rb.angularVelocity = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
         transform.localScale = _initialScale;
         _timer = lifetime;
+    }
+
+    public void OnObjectReleased()
+    {
     }
 }

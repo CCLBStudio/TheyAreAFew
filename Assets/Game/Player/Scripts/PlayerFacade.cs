@@ -7,7 +7,7 @@ public class PlayerFacade : MonoBehaviour
 
     private IPlayerBehaviour[] _behaviours;
     
-    private void Awake()
+    private void Start()
     {
         players.Add(this);
         _behaviours = GetComponentsInChildren<IPlayerBehaviour>();

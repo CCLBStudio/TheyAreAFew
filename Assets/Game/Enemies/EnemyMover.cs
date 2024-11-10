@@ -21,7 +21,6 @@ public class EnemyMover : MonoBehaviour, IEnemyBehaviour
         _direction.y /= heightDivider;
         
         rb.AddForce(_direction.normalized * _speed);
-        Debug.DrawLine(transform.position, (transform.position +(Vector3)_direction.normalized) * _speed);
     }
 
     public void ApplyKnockbackForce()
