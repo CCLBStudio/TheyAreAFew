@@ -122,6 +122,7 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions
             case InputDeviceChange.Added:
                 if (IsNewDevice(gamepad) && _assignedDevice == null)
                 {
+                    _playerDevices[playerId] = gamepad;
                     SetDevice(gamepad);
                 }
                 break;
@@ -171,7 +172,7 @@ public class InputReader : ScriptableObject, PlayerControls.IPlayerActions
     {
         if (_playerDevices[playerId] == null)
         {
-            Debug.LogError($"There is no gamepad available for {playerId}");
+            Debug.LogWarning($"There is no gamepad available for {playerId}");
             return;
         }
         

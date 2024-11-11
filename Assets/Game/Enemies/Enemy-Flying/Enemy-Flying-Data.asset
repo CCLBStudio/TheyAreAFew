@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22281ef54c16c084c83619ceb3330ce1, type: 3}
-  m_Name: MaxJumpStrengthTime-Player1
+  m_Script: {fileID: 11500000, guid: 73b47979b6854a74cb8278026ebcf7be, type: 3}
+  m_Name: Enemy-Flying-Data
   m_EditorClassIdentifier: 
-  value: 0.3
-  initialValue: 0
+  maxHealth: 50

@@ -340,12 +340,13 @@ GameObject:
   - component: {fileID: 1551459815063483252}
   - component: {fileID: 7126139698575504579}
   - component: {fileID: 7163104571961284578}
+  - component: {fileID: 2973736748745268754}
   - component: {fileID: 5117817040848553908}
   - component: {fileID: 1863892172625965392}
   - component: {fileID: 3993461349045189390}
   - component: {fileID: 4088282553964037092}
   m_Layer: 7
-  m_Name: Player
+  m_Name: Player-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -359,7 +360,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6585772666322606550}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -426,9 +427,39 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ea96aeccf200f594c9c9254f9f1981f7, type: 2}
   - {fileID: 11400000, guid: 62995177785c9794d814654a0f7420c1, type: 2}
   - {fileID: 11400000, guid: 8ab392d1149aa4a45954e09d9bec04f2, type: 2}
+--- !u!114 &2973736748745268754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6585772666322606550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f676d1921c283488f6a1526ff57544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   groundLayers:
     serializedVersion: 2
     m_Bits: 512
+  rb: {fileID: 4088282553964037092}
+  feetReference: {fileID: 4408659387768372024}
+  feetHeightTolerance: 0.1
+  onGrounded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7163104571961284578}
+        m_TargetAssemblyTypeName: PlayerJumper, Assembly-CSharp
+        m_MethodName: OnGrounded
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5117817040848553908
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using CCLBStudio.ScriptablePooling;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class SimpleEnemySpawner : MonoBehaviour
 {
-    [SerializeField] private ScriptablePool enemyPool;
+    [FormerlySerializedAs("enemyPool")] [SerializeField] private List<ScriptablePool> enemyPools;
     [SerializeField] private List<Transform> spawnPoints;
     [SerializeField] float timeBetweenSpawns = .5f;
 
@@ -13,7 +14,10 @@ public class SimpleEnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        enemyPool.Initialize();
+        foreach (var p in enemyPools)
+        {
+            p.Initialize();
+        }
         _spawnTimer = timeBetweenSpawns;
     }
 
@@ -31,7 +35,7 @@ public class SimpleEnemySpawner : MonoBehaviour
     private void Spawn()
     {
         var pos = spawnPoints[Random.Range(0, spawnPoints.Count)].position;
-        var obj = enemyPool.RequestObjectAs<EnemyFacade>();
+        var obj = enemyPools[Random.Range(0, enemyPools.Count)].RequestObjectAs<EnemyFacade>();
         obj.transform.position = pos;
     }
 }

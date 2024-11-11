@@ -2,11 +2,12 @@ using ReaaliStudio.Systems.ScriptableValue;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerGroundChecker))]
 public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
 {
     public bool IsJumping => _isJumping;
     public bool ReachedApex => _reachedApex;
-    public bool Grounded => _grounded;
+    public bool Grounded => _groundChecker.Grounded;
     public bool IsChargingJump => _isChargingJump;
     public PlayerFacade Facade { get; set; }
     public Propulsor InRangePropulsor { get; private set; }
@@ -21,12 +22,10 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
     [SerializeField] private Vector2Value propulsionDirection;
     [SerializeField] private float inputBufferTime = .15f;
     [SerializeField] private List<JumpEffect> jumpEffects;
-    [SerializeField] private LayerMask groundLayers;
 
     private bool _isJumping;
     private bool _isChargingJump;
     private bool _reachedApex;
-    private bool _grounded;
 
     private float _pressingTime;
     private float _beginChargeTime;
@@ -34,6 +33,7 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
 
     private Vector3 _previousPosition;
     private bool _hasPressedPropulseInput;
+    private PlayerGroundChecker _groundChecker;
 
 
     #region Unity Events
@@ -41,9 +41,9 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
     private void Start()
     {
         _previousPosition = movementRb.linearVelocity;
+        _groundChecker = GetComponent<PlayerGroundChecker>();
         _isChargingJump = false;
         _isJumping = false;
-        _grounded = false;
         _reachedApex = false;
 
         inputReader.JumpBeginEvent += OnJumpInputPressed;
@@ -90,36 +90,24 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        if ((groundLayers.value & (1 << other.gameObject.layer)) != 0)
-        {
-            _grounded = false;
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if ((groundLayers.value & (1 << other.gameObject.layer)) != 0)
-        {
-            _isJumping = false;
-            _grounded = true;
-
-            foreach (var effect in jumpEffects)
-            {
-                effect.Landed(this);
-            }
-
-            if (_hasPressedJumpInput && Time.time - _pressingTime <= inputBufferTime)
-            {
-                BeginJumpCharge();
-            }
-        }
-    }
-
     #endregion
 
     #region Jump Methods
+
+    public void OnGrounded()
+    {
+        _isJumping = false;
+
+        foreach (var effect in jumpEffects)
+        {
+            effect.Landed(this);
+        }
+
+        if (_hasPressedJumpInput && Time.time - _pressingTime <= inputBufferTime)
+        {
+            BeginJumpCharge();
+        }
+    }
 
     private void OnJumpInputPressed()
     {

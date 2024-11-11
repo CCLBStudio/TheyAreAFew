@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed30c3d5e590b948ae0ec93a95c4477, type: 3}
   m_Name: AddForceJumpEffect-Player1
   m_EditorClassIdentifier: 
-  maxJumpForce: 210
-  propulsionForce: 180
+  maxJumpForce: 150
+  propulsionForce: 150
   normalizedJumpStrength: {fileID: 11400000, guid: 2ee73b39d6524a940aaacb1b816a6a86,
     type: 2}
   propulsionDirection: {fileID: 11400000, guid: 61f37472a4ff1a04c8adda01e8d748c2,

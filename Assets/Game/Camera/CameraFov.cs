@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using ReaaliStudio.Systems.ScriptableValue;
 using UnityEngine;
@@ -22,6 +21,11 @@ public class CameraFov : MonoBehaviour
 
     private void Update()
     {
+        if (players.Value.Count <= 1)
+        {
+            return;
+        }
+        
         var points = Vector3Utils.GetFarthestPoints(players.Value.Select(x => x.transform.position).ToList());
         float normalizedRange = Mathf.Clamp01((Vector3.Distance(points.Item1, points.Item2) - distanceForMinFov) / distanceForMaxFov);
 

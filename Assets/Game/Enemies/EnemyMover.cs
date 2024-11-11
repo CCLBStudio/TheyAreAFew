@@ -5,45 +5,52 @@ using Random = UnityEngine.Random;
 public class EnemyMover : MonoBehaviour, IEnemyBehaviour
 {
     public EnemyFacade Facade { get; set; }
+    public Transform Target => target;
+    public bool CanMove { get; set; } = true;
 
-    [SerializeField] private PlayerFacadeListValue players;
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Vector2 minMaxSpeed = Vector2.one;
-    [SerializeField] private float heightDivider = 2f;
+    [SerializeField] protected PlayerFacadeListValue players;
+    [SerializeField] protected Rigidbody2D rb;
+    [SerializeField] protected Vector2 minMaxSpeed = Vector2.one;
+    [SerializeField] protected float heightDivider = 2f;
 
-    private float _speed;
-    private Vector2 _direction;
-    private Transform _target;
+    protected float speed;
+    protected Vector2 direction;
+    protected Transform target;
 
     protected virtual void Move()
     {
-        _direction = _target.position - transform.position;
-        _direction.y /= heightDivider;
+        direction = target.position - transform.position;
+        direction.y /= heightDivider;
         
-        rb.AddForce(_direction.normalized * _speed);
+        rb.AddForce(direction.normalized * speed);
     }
 
-    public void ApplyKnockbackForce()
+    public virtual void ApplyKnockbackForce()
     {
         
     }
     
-    public void OnEnemyCreated()
+    public virtual void OnEnemyCreated()
     {
-        _speed = Random.Range(minMaxSpeed.x, minMaxSpeed.y);
+        speed = Random.Range(minMaxSpeed.x, minMaxSpeed.y);
     }
 
-    public void OnEnemyRequested()
+    public virtual void OnEnemyRequested()
     {
-        _target = players.Value[Random.Range(0, players.Value.Count)].transform;
+        target = players.Value[Random.Range(0, players.Value.Count)].transform;
+        CanMove = true;
     }
 
-    public void OnEnemyReleased()
+    public virtual void OnEnemyReleased()
     {
     }
 
-    public void OnFixedUpdated()
+    public virtual void OnFixedUpdated()
     {
+        if (!CanMove)
+        {
+            return;
+        }
         Move();
     }
 }
