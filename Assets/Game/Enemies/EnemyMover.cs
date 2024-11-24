@@ -9,6 +9,7 @@ public class EnemyMover : MonoBehaviour, IEnemyBehaviour
     public bool CanMove { get; set; } = true;
 
     [SerializeField] protected PlayerFacadeListValue players;
+    [SerializeField] protected ScriptableEnemy enemyData;
     [SerializeField] protected Rigidbody2D rb;
     [SerializeField] protected Vector2 minMaxSpeed = Vector2.one;
     [SerializeField] protected float heightDivider = 2f;

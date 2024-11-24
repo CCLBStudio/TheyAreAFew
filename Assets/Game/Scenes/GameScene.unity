@@ -16942,11 +16942,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPools:
-  - {fileID: 11400000, guid: 97dd78aa0f8ad4545adb6c6e533b7980, type: 2}
+  - {fileID: 11400000, guid: e767b47ae9f447347b2da93a7308e1a4, type: 2}
   spawnPoints:
   - {fileID: 1233549227}
   - {fileID: 868203219}
-  timeBetweenSpawns: 0.5
+  timeBetweenSpawns: 1
 --- !u!1 &425179187
 GameObject:
   m_ObjectHideFlags: 0
@@ -33594,7 +33594,7 @@ Transform:
   m_GameObject: {fileID: 868203218}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.7, y: 7.4, z: 0}
+  m_LocalPosition: {x: 44.7, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48462,7 +48462,7 @@ Transform:
   m_GameObject: {fileID: 1233549226}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -47.62, y: 7.4, z: 0}
+  m_LocalPosition: {x: -47.62, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -4,6 +4,8 @@ using UnityEngine;
 public class ScriptableEnemy : ScriptableObject
 {
     public float MaxHealth => maxHealth;
+    public float AttackRange => attackRange;
 
     [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float attackRange = 1f;
 }
