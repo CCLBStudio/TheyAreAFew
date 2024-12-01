@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FlyingEnemyMover : EnemyMover
+public class FlyingEnemyChaseState : EnemyChaseState
 {
     [SerializeField] private float desiredHeight = 10f;
     [SerializeField] private float minDeltaX, maxDeltaX, minDeltaY, maxDeltaY;
@@ -12,7 +12,6 @@ public class FlyingEnemyMover : EnemyMover
     
     protected override void Move()
     {
-        SetClosestPlayerAsTarget();
         ComputeDesiredPosition();
 
         Vector2 dir = (_desiredPosition - rb.position).normalized;
@@ -22,7 +21,7 @@ public class FlyingEnemyMover : EnemyMover
 
     private void ComputeDesiredPosition()
     {
-        _desiredPosition = target.position;
+        _desiredPosition = Target.position;
         _desiredPosition.x += _deltaPosX;
         _desiredPosition.y = desiredHeight + _deltaPosY;
     }
@@ -32,20 +31,5 @@ public class FlyingEnemyMover : EnemyMover
         _deltaPosY = Random.Range(minDeltaY, maxDeltaY);
         _deltaPosX = Random.Range(-minDeltaX, minDeltaX);
         CanMove = true;
-    }
-
-    private void SetClosestPlayerAsTarget()
-    {
-        float distance = float.MaxValue;
-
-        foreach (var p in players.Value)
-        {
-            float d = Vector3.Distance(p.transform.position, transform.position);
-            if (d < distance)
-            {
-                distance = d;
-                target = p.transform;
-            }
-        }
     }
 }

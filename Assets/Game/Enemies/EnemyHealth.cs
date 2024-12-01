@@ -4,7 +4,6 @@ public class EnemyHealth : MonoBehaviour, IEnemyBehaviour
 {
     public EnemyFacade Facade { get; set; }
 
-    [SerializeField] private ScriptableEnemy enemyData;
 
     private float _currentHealth;
     
@@ -15,7 +14,7 @@ public class EnemyHealth : MonoBehaviour, IEnemyBehaviour
 
     public void OnEnemyRequested()
     {
-        _currentHealth = enemyData.MaxHealth;
+        _currentHealth = Facade.EnemyData.MaxHealth;
     }
 
     public void OnEnemyReleased()

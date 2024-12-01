@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Enemy-Skeleton-Data
   m_EditorClassIdentifier: 
   maxHealth: 50
+  attackRange: 2
+  attackSpeed: 0.5
