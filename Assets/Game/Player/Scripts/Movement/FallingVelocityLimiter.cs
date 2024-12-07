@@ -10,7 +10,6 @@ public class FallingVelocityLimiter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //rb.linearVelocityY = Mathf.Max(rb.linearVelocityY, -maxAbsoluteFallingVelocity);
         currentVelocity = rb.linearVelocity;
 
         if (rb.linearVelocityY > 0f)
@@ -20,7 +19,6 @@ public class FallingVelocityLimiter : MonoBehaviour
         
 
         float absVel = Mathf.Clamp(-maxAbsoluteFallingVelocity - rb.linearVelocityY, 0f, maximumForceMultiplicator);
-        //float absVel = Mathf.Max(-maxAbsoluteFallingVelocity - rb.linearVelocityY, 0f);
         rb.AddForceY(absVel * -Physics2D.gravity.y * rb.gravityScale * rb.mass);
     }
 }

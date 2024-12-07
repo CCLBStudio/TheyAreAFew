@@ -264,7 +264,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""30edebfa-5d0c-4e03-9bff-326721397123"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": ""AxisDeadzone(min=0.4)"",
                     ""groups"": "";Gamepad"",

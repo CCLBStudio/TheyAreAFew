@@ -1,6 +1,7 @@
 
 using PrimeTween;
 using ReaaliStudio.Systems.ScriptableValue;
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "They Are Many/Player/Jump/Effects/Add Force Jump Effect", fileName = "NewAddForceJumpEffect")]
@@ -13,6 +14,7 @@ public class AddForceJumpEffect : JumpEffect
 
     private bool _jumpInputReleased;
     private bool _propulsionInputReleased;
+    [NonSerialized] private bool _isFreezed;
     private Tween _propulsionVelocitySmoother;
     private Vector2 _propulsionDir;
     
@@ -42,6 +44,12 @@ public class AddForceJumpEffect : JumpEffect
             jumper.movementRb.AddForce(Vector2.up * (maxJumpForce * normalizedJumpStrength.Value), ForceMode2D.Impulse);
         }
 
+        if (_isFreezed)
+        {
+
+            //jumper.movementRb.linearVelocity = Vector2.zero;
+        }
+
         if (_propulsionInputReleased)
         {
             _propulsionInputReleased = false;
@@ -54,11 +62,14 @@ public class AddForceJumpEffect : JumpEffect
 
     public override void ChargingPropulsion(PlayerJumper jumper)
     {
-        _propulsionVelocitySmoother = Tween.Custom(jumper.movementRb.linearVelocity, Vector2.zero, .2f, vector2 => jumper.movementRb.linearVelocity = vector2, Ease.OutSine);
+        _isFreezed = false;
+        _propulsionVelocitySmoother = Tween.Custom(jumper.movementRb.linearVelocity, Vector2.zero, .2f, vector2 => jumper.movementRb.linearVelocity = vector2, Ease.OutSine)
+            .OnComplete(OnChargingCompleted);
     }
 
     public override void Propulse(PlayerJumper jumper)
     {
+        _isFreezed = false;
         if (_propulsionVelocitySmoother.isAlive)
         {
             _propulsionVelocitySmoother.Stop();
@@ -66,5 +77,10 @@ public class AddForceJumpEffect : JumpEffect
 
         _propulsionInputReleased = true;
         _propulsionDir = propulsionDirection.Value.normalized;
+    }
+
+    private void OnChargingCompleted()
+    {
+        _isFreezed = true;
     }
 }
