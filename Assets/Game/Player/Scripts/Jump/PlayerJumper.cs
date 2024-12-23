@@ -34,6 +34,7 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
     private Vector3 _previousPosition;
     private bool _hasPressedPropulseInput;
     private PlayerGroundChecker _groundChecker;
+    private Dictionary<Propulsor, bool> _hasPropulsed = new();
 
 
     #region Unity Events
@@ -162,16 +163,23 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
     public void OnEnterPropulsor(Propulsor propulsor)
     {
         InRangePropulsor = propulsor;
+        _hasPropulsed.TryAdd(propulsor, false);
     }
 
     public void OnExitPropulsor(Propulsor propulsor)
     {
         InRangePropulsor = null;
+        _hasPropulsed.Remove(propulsor);
     }
     
     private void OnPropulsionInputPressed()
     {
         if (!InRangePropulsor)
+        {
+            return;
+        }
+
+        if (!_hasPropulsed.ContainsKey(InRangePropulsor) || _hasPropulsed[InRangePropulsor] == true)
         {
             return;
         }
@@ -187,11 +195,17 @@ public class PlayerJumper : MonoBehaviour, IPlayerBehaviour
 
     private void OnPropulsionInputReleased()
     {
-        if (!_hasPressedPropulseInput)
+        if (!_hasPressedPropulseInput || InRangePropulsor == null)
         {
             return;
         }
 
+        if (!_hasPropulsed.ContainsKey(InRangePropulsor) || _hasPropulsed[InRangePropulsor] == true)
+        {
+            return;
+        }
+
+        _hasPropulsed[InRangePropulsor] = true;
         _hasPressedPropulseInput = false;
         _reachedApex = false;
         _previousPosition = Vector3.zero;

@@ -26,6 +26,6 @@ public class SkeletonChaseState : EnemyChaseState
 
     private float ComputeTargetDistance()
     {
-        return Vector2.Distance(rb.position, _desiredPosition);
+        return Vector2.Distance(rb.position, Target.position);
     }
 }

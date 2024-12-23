@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -22,6 +23,7 @@ public class EnemyChaseState : MonoBehaviour, IEnemyBehaviour, IEnemyState
 
     protected float speed;
     protected Vector2 direction;
+    protected Quaternion baseRot;
 
     protected virtual void Move()
     {
@@ -30,10 +32,30 @@ public class EnemyChaseState : MonoBehaviour, IEnemyBehaviour, IEnemyState
         
         rb.AddForce(direction.normalized * speed);
     }
-    
+
+    protected virtual void OrientTowardsTarget()
+    {
+        if (Target == null)
+        {
+            return;
+        }
+
+        float targetPos = Target.position.x;
+        float selfPos = rb.position.x;
+
+        if (targetPos > selfPos)
+        {
+            transform.rotation = baseRot * Quaternion.Euler(0f, 180f, 0f);
+        }
+        else
+        {
+            transform.rotation = baseRot;
+        }
+    }
     public virtual void OnEnemyCreated()
     {
         speed = Random.Range(minMaxSpeed.x, minMaxSpeed.y);
+        baseRot = transform.rotation;
     }
 
     public virtual void OnEnemyRequested()
@@ -60,6 +82,7 @@ public class EnemyChaseState : MonoBehaviour, IEnemyBehaviour, IEnemyState
 
     public virtual void UpdateState()
     {
+        OrientTowardsTarget();
         Move();
     }
 
