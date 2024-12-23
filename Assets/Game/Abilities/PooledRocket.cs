@@ -11,11 +11,15 @@ public class PooledRocket : PooledAbilityObject<ScriptableRocketAbility>, IDamag
     private Tween _accelerationTween;
     private bool _isAlive;
     private float _lifetime;
+    private ScriptableRocketAbility _scriptableAbility;
 
-    public override void Initialize()
+    public override void Initialize(ScriptableRocketAbility scriptableAbility)
     {
-        float maxSpeed = scriptableAbility.TravelSpeed;
-        _accelerationTween = Tween.Custom(0f, maxSpeed, scriptableAbility.AccelerationTime, f => _currentSpeed = f, scriptableAbility.AccelerationEase);
+        _scriptableAbility = scriptableAbility;
+        
+        _lifetime = _scriptableAbility.Lifetime;
+        float maxSpeed = _scriptableAbility.TravelSpeed;
+        _accelerationTween = Tween.Custom(0f, maxSpeed, _scriptableAbility.AccelerationTime, f => _currentSpeed = f, _scriptableAbility.AccelerationEase);
         
         rocketCollider.enabled = true;
     }
@@ -53,7 +57,7 @@ public class PooledRocket : PooledAbilityObject<ScriptableRocketAbility>, IDamag
 
     private void PlayExplosionParticles()
     {
-        var effect = scriptableAbility.ExplosionPool.RequestObjectAs<PooledParticleSystem>();
+        var effect = _scriptableAbility.ExplosionPool.RequestObjectAs<PooledParticleSystem>();
         Vector3 abilityPos = transform.position;
         effect.transform.position = abilityPos;
         effect.Play();
@@ -61,7 +65,7 @@ public class PooledRocket : PooledAbilityObject<ScriptableRocketAbility>, IDamag
 
     private void ApplyDamages()
     {
-        Collider2D[] inRange = Physics2D.OverlapCircleAll(transform.position, scriptableAbility.ExplosionRange, collisionMask);
+        Collider2D[] inRange = Physics2D.OverlapCircleAll(transform.position, _scriptableAbility.ExplosionRange, collisionMask);
         foreach (var col in inRange)
         {
             var damageables = col.gameObject.GetComponents<IDamageable>();
@@ -71,7 +75,7 @@ public class PooledRocket : PooledAbilityObject<ScriptableRocketAbility>, IDamag
 
                 if (d.GetRigidbody())
                 {
-                    d.GetRigidbody().AddExplosionForce(scriptableAbility.KnockbackForce, rb.position, scriptableAbility.ExplosionRange, 1f);
+                    d.GetRigidbody().AddExplosionForce(_scriptableAbility.KnockbackForce, rb.position, _scriptableAbility.ExplosionRange, 1f);
                 }
             }
         }
@@ -86,7 +90,6 @@ public class PooledRocket : PooledAbilityObject<ScriptableRocketAbility>, IDamag
     public override void OnObjectRequested()
     {
         _isAlive = true;
-        _lifetime = scriptableAbility.Lifetime;
     }
     
     public override void OnObjectReleased()
@@ -108,7 +111,7 @@ public class PooledRocket : PooledAbilityObject<ScriptableRocketAbility>, IDamag
 
     public float GetDamages()
     {
-        return scriptableAbility.Strength;
+        return _scriptableAbility.Strength;
     }
 
     #endregion
@@ -117,7 +120,11 @@ public class PooledRocket : PooledAbilityObject<ScriptableRocketAbility>, IDamag
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(transform.position, scriptableAbility.ExplosionRange);
+        if (!_scriptableAbility)
+        {
+            return;
+        }
+        Gizmos.DrawWireSphere(transform.position, _scriptableAbility.ExplosionRange);
     }
 
 #endif

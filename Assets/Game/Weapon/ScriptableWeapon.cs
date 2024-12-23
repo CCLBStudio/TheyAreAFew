@@ -62,7 +62,7 @@ public class ScriptableWeapon : ScriptableObject
         muzzlePool.Initialize();
         groundImpactPool.Initialize();
 
-        weapon.Initialize(attacker);
+        weapon.Initialize(attacker, this);
 
         return weapon;
     }

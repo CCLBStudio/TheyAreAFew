@@ -21,7 +21,7 @@ public abstract class ScriptableAbility : ScriptableObject
         var ability = Instantiate(abilityPrefab.gameObject, playerAbilities.AbilityHolder).GetComponent<RuntimeAbility>();
         
         visualPool.Initialize();
-        ability.Initialize(playerAbilities);
+        ability.Initialize(playerAbilities, this);
         
         return ability;
     }

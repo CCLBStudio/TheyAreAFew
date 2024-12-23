@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class RuntimeAbility : MonoBehaviour
 {
-    public abstract void Initialize(PlayerAbilities playerAbilities);
+    public abstract void Initialize(PlayerAbilities playerAbilities, ScriptableAbility rocketAbility);
     public abstract void OnAim(Vector2 direction);
     public abstract void OnInputPressed();
     public abstract void OnInputReleased();

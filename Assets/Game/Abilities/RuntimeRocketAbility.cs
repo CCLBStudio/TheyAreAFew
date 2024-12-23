@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class RuntimeRocketAbility : RuntimeAbility
 {
-    [SerializeField] private ScriptableRocketAbility rocketAbility;
-
     private float _cooldown;
     private PlayerAbilities _playerAbilities;
     private Vector2 _aimDir = Vector2.down;
+    private ScriptableRocketAbility _rocketAbility;
 
     private void Update()
     {
@@ -16,10 +15,11 @@ public class RuntimeRocketAbility : RuntimeAbility
         }
     }
 
-    public override void Initialize(PlayerAbilities playerAbilities)
+    public override void Initialize(PlayerAbilities playerAbilities, ScriptableAbility rocketAbility)
     {
         _cooldown = 0f;
         _playerAbilities = playerAbilities;
+        _rocketAbility = (ScriptableRocketAbility)rocketAbility;
     }
 
     public override void OnAim(Vector2 direction)
@@ -29,10 +29,10 @@ public class RuntimeRocketAbility : RuntimeAbility
 
     private void LaunchRocket()
     {
-        var rocket = rocketAbility.VisualPool.RequestObjectAs<PooledRocket>();
+        var rocket = _rocketAbility.VisualPool.RequestObjectAs<PooledRocket>();
         rocket.SetPositionAndRotation(_playerAbilities.AbilityHolder.position, ComputeRotationTowardAxis(_aimDir));
-        rocket.Initialize();
-        _cooldown = rocketAbility.Cooldown;
+        rocket.Initialize(_rocketAbility);
+        _cooldown = _rocketAbility.Cooldown;
     }
 
     public override void OnInputPressed()

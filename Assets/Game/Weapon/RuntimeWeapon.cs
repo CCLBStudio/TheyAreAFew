@@ -4,7 +4,7 @@ public class RuntimeWeapon : MonoBehaviour
 {
     public float AttackSpeed => GetAttackSpeed();
     
-    [SerializeField] private ScriptableWeapon weapon;
+    //[SerializeField] private ScriptableWeapon weapon;
     [SerializeField] private Transform bulletOrigin;
     [SerializeField] private Transform muzzleOrigin;
     [SerializeField] private Transform casingOrigin;
@@ -16,12 +16,14 @@ public class RuntimeWeapon : MonoBehaviour
     private PlayerAttacker _attacker;
     private bool _init;
     private static readonly int Shooting = Animator.StringToHash("Shooting");
+    private ScriptableWeapon _weapon;
 
-    public void Initialize(PlayerAttacker attacker)
+    public void Initialize(PlayerAttacker attacker, ScriptableWeapon weapon)
     {
         weaponAnimator = GetComponent<Animator>();
         _playerRb = attacker.PlayerRb;
         _attacker = attacker;
+        _weapon = weapon;
 
         _init = true;
     }
@@ -41,10 +43,10 @@ public class RuntimeWeapon : MonoBehaviour
 
     private void SpawnBullet(Vector2 shootingDirection)
     {
-        var bullet = weapon.BulletPool.RequestObjectAs<RuntimeBullet>();
-        bullet.Initialize(weapon);
+        var bullet = _weapon.BulletPool.RequestObjectAs<RuntimeBullet>();
+        bullet.Initialize(_weapon);
         
-        float dispersion = Random.Range(-weapon.Dispersion, weapon.Dispersion);
+        float dispersion = Random.Range(-_weapon.Dispersion, _weapon.Dispersion);
         var orientation = Quaternion.FromToRotation(Vector3.right, shootingDirection) * Quaternion.AngleAxis(dispersion, Vector3.forward);
         bullet.Direction = ApplyRotation(shootingDirection, dispersion);
         bullet.transform.SetPositionAndRotation(bulletOrigin.position, orientation);
@@ -52,7 +54,7 @@ public class RuntimeWeapon : MonoBehaviour
 
     private void SpawnMuzzle()
     {
-        var muzzle = weapon.MuzzlePool.RequestObjectAs<AutoReleasePooledObject>();
+        var muzzle = _weapon.MuzzlePool.RequestObjectAs<AutoReleasePooledObject>();
         Transform muzzleTransform = muzzle.transform;
         
         muzzleTransform.SetParent(muzzleOrigin);
@@ -63,19 +65,19 @@ public class RuntimeWeapon : MonoBehaviour
     private void ApplyKnockbackForce(Vector2 shootingDirection)
     {
         Vector2 dir = ApplyRotation(shootingDirection, 180f).normalized;
-        dir.x *= _attacker.Jumper.Grounded ? 1f : weapon.PlayerInAirKnockbackForceXMultiplier;
+        dir.x *= _attacker.Jumper.Grounded ? 1f : _weapon.PlayerInAirKnockbackForceXMultiplier;
         
-        _playerRb.AddForce(dir * weapon.PlayerKnockbackForce, ForceMode2D.Impulse);
+        _playerRb.AddForce(dir * _weapon.PlayerKnockbackForce, ForceMode2D.Impulse);
     }
 
     private void SpawnCasing()
     {
-        var casing = weapon.CasingPool.RequestObjectAs<PooledCasing>();
+        var casing = _weapon.CasingPool.RequestObjectAs<PooledCasing>();
         casing.transform.SetPositionAndRotation(casingOrigin.position, Random.rotation);
-        Vector3 dir = ApplyRotation(casingEjectionDirection, Random.Range(-weapon.CasingDispersion, weapon.CasingDispersion)).normalized;
+        Vector3 dir = ApplyRotation(casingEjectionDirection, Random.Range(-_weapon.CasingDispersion, _weapon.CasingDispersion)).normalized;
         
-        casing.Rigidbody.AddForce(dir * weapon.CasingEjectionForce, ForceMode.Impulse);
-        casing.Rigidbody.AddTorque(new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * weapon.CasingEjectionForce, ForceMode.Impulse);
+        casing.Rigidbody.AddForce(dir * _weapon.CasingEjectionForce, ForceMode.Impulse);
+        casing.Rigidbody.AddTorque(new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * _weapon.CasingEjectionForce, ForceMode.Impulse);
     }
 
     public void StartShooting()
@@ -111,6 +113,6 @@ public class RuntimeWeapon : MonoBehaviour
 
     private float GetAttackSpeed()
     {
-        return weapon.AttackSpeed;
+        return _weapon.AttackSpeed;
     }
 }
