@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Game/Scenes/GameScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Game/Scenes/DadGift/DadGift.unity
+    guid: 00eafb330c3d8c243b5cc6683e399d08
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: c30427892c61a864f8ffdfe13ee8561f,
       type: 2}
