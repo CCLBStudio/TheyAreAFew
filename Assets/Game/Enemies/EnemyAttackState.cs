@@ -73,7 +73,7 @@ public class EnemyAttackState : MonoBehaviour, IEnemyBehaviour, IEnemyState
 
     private void OnDrawGizmosSelected()
     {
-        if (!Application.isPlaying)
+        if (!Application.isPlaying || !Facade)
         {
             return;
         }
