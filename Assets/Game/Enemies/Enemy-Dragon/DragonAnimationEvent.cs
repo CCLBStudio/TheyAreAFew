@@ -18,6 +18,8 @@ public class DragonAnimationEvent : MonoBehaviour
     private void LaunchFireball()
     {
         var ball = fireballPool.RequestObjectAs<DragonFireball>();
-        ball.transform.position = fireballOrigin.position;
+        ball.transform.SetPositionAndRotation(fireballOrigin.position, fireballOrigin.rotation);
+        // ball.transform.position = fireballOrigin.position;
+        // ball.transform.rotation = fireballOrigin.rotation;
     }
 }

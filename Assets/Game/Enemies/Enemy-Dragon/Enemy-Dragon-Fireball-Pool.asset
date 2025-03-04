@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38dc05e3ca7b2804bb5ee299c59fa021, type: 3}
   m_Name: Enemy-Dragon-Fireball-Pool
   m_EditorClassIdentifier: 
-  pooledObjectPrefab: {fileID: 7000735478735714895, guid: 434c4960a1de2464f91afc5261f63432,
+  pooledObjectPrefab: {fileID: 7531706520409303811, guid: 5daa760f80dbfb24baac15a8cb9f4c8e,
     type: 3}
   quantityToInstantiate: 10
   disableObjectOnCreation: 1

@@ -14,7 +14,6 @@ public class DragonChaseState : EnemyChaseState
         
         ComputeDesiredPosition();
 
-        Debug.Log("Move");
         var position = rb.position;
         Vector2 dir = (_desiredPosition - position).normalized;
         rb.MovePosition(position + dir * (speed * Time.fixedDeltaTime));

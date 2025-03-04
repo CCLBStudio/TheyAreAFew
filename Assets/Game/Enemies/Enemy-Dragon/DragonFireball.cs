@@ -8,6 +8,7 @@ public class DragonFireball : MonoBehaviour, IScriptablePooledObject
     
     [SerializeField] protected PlayerFacadeListValue players;
     [SerializeField] private float speed = 15f;
+    [SerializeField] private float rotationSpeed = 40f;
     [SerializeField] private float lifetime = 3f;
 
     private Transform _target;
@@ -29,9 +30,14 @@ public class DragonFireball : MonoBehaviour, IScriptablePooledObject
 
         var self = transform;
         Vector3 dir = _target.position - self.position;
-        Quaternion lookRot = Quaternion.LookRotation(dir);
-        self.rotation = Quaternion.RotateTowards(self.rotation, lookRot, 25);
-        self.position += self.forward * (speed * Time.deltaTime);
+        //Quaternion lookRot = Quaternion.LookRotation(dir);
+        // Quaternion lookRot = Quaternion.LookRotation(Vector3.forward, dir);
+        // lookRot *= Quaternion.Euler(0, 90, 0);
+        
+        Quaternion lookRot = Quaternion.FromToRotation(Vector3.right, dir.normalized);
+
+        self.rotation = Quaternion.Slerp(self.rotation, lookRot, rotationSpeed * Time.deltaTime);
+        self.position += self.right * (speed * Time.deltaTime);
     }
 
     private void SelectClosestTarget()
